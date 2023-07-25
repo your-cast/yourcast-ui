@@ -356,13 +356,6 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
   {
     id: randomId(),
     href: "/search",
-    name: "Templates",
-    type: "megaMenu",
-    children: MEGAMENU_TEMPLATES,
-  },
-  {
-    id: randomId(),
-    href: "/search",
     name: "Explore",
     type: "dropdown",
     children: OTHER_PAGE_CHILD,

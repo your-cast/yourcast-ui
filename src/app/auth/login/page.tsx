@@ -88,6 +88,6 @@ class PageLogin extends Component {
       </Layout>
     );
   };
-};
+}
 
 export default PageLogin;
