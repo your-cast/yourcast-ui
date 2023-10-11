@@ -1,47 +1,22 @@
-import { Popover, Tab, Transition } from "app/headlessui";
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import { GlobeAltIcon } from "@heroicons/react/24/outline";
-import { FC, Fragment } from "react";
-import { headerCurrency } from "./CurrencyDropdown";
+import {Popover, Tab, Transition} from 'app/headlessui';
+import {ChevronDownIcon} from '@heroicons/react/24/solid';
+import {GlobeAltIcon} from '@heroicons/react/24/outline';
+import {FC, Fragment} from 'react';
 
 export const headerLanguage = [
   {
     id: "English",
     name: "English",
-    description: "United State",
+    description: "English",
     href: "##",
     active: true,
   },
   {
-    id: "Vietnamese",
-    name: "Vietnamese",
-    description: "Vietnamese",
+    id: "Українська",
+    name: "Українська",
+    description: "Українська",
     href: "##",
-  },
-  {
-    id: "Francais",
-    name: "Francais",
-    description: "Belgique",
-    href: "##",
-  },
-  {
-    id: "Francais",
-    name: "Francais",
-    description: "Canada",
-    href: "##",
-  },
-  {
-    id: "Francais",
-    name: "Francais",
-    description: "Belgique",
-    href: "##",
-  },
-  {
-    id: "Francais",
-    name: "Francais",
-    description: "Canada",
-    href: "##",
-  },
+  }
 ];
 
 interface LangDropdownProps {
@@ -71,26 +46,6 @@ const LangDropdown: FC<LangDropdownProps> = ({ panelClassName = "" }) => {
                 {item.description}
               </p>
             </div>
-          </a>
-        ))}
-      </div>
-    );
-  };
-
-  const renderCurr = (close: () => void) => {
-    return (
-      <div className="grid gap-7 lg:grid-cols-2">
-        {headerCurrency.map((item, index) => (
-          <a
-            key={index}
-            href={item.href}
-            onClick={() => close()}
-            className={`flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 ${
-              item.active ? "bg-gray-100 dark:bg-gray-700" : "opacity-80"
-            }`}
-          >
-            <item.icon className="w-[18px] h-[18px] " />
-            <p className="ml-2 text-sm font-medium ">{item.name}</p>
           </a>
         ))}
       </div>
@@ -128,44 +83,7 @@ const LangDropdown: FC<LangDropdownProps> = ({ panelClassName = "" }) => {
                 className={`absolute z-20 w-96 mt-3.5 right-0 ${panelClassName}`}
               >
                 <div className="p-6 rounded-2xl bg-white dark:bg-neutral-800 shadow-lg ring-1 ring-black ring-opacity-5">
-                  <Tab.Group>
-                    <Tab.List className="flex space-x-1 rounded-full bg-gray-100 dark:bg-slate-700 p-1">
-                      {["Language", "Currency"].map((category) => (
-                        <Tab
-                          key={category}
-                          className={({ selected }) =>
-                            classNames(
-                              "w-full rounded-full py-2 text-sm font-medium leading-5 text-gray-700",
-                              "focus:outline-none focus:ring-0",
-                              selected
-                                ? "bg-white shadow"
-                                : "text-gray-700 dark:text-slate-300 hover:bg-white/70 dark:hover:bg-slate-900/40"
-                            )
-                          }
-                        >
-                          {category}
-                        </Tab>
-                      ))}
-                    </Tab.List>
-                    <Tab.Panels className="mt-5">
-                      <Tab.Panel
-                        className={classNames(
-                          "rounded-xl p-3",
-                          "focus:outline-none focus:ring-0"
-                        )}
-                      >
-                        {renderLang(close)}
-                      </Tab.Panel>
-                      <Tab.Panel
-                        className={classNames(
-                          "rounded-xl p-3",
-                          "focus:outline-none focus:ring-0"
-                        )}
-                      >
-                        {renderCurr(close)}
-                      </Tab.Panel>
-                    </Tab.Panels>
-                  </Tab.Group>
+                  {renderLang(close)}
                 </div>
               </Popover.Panel>
             </Transition>

@@ -1,6 +1,6 @@
-import { Popover, Transition } from "app/headlessui";
-import Avatar from "components/Avatar/Avatar";
-import { FC, Fragment } from "react";
+import {Popover, Transition} from 'app/headlessui';
+import Avatar from 'components/Avatar/Avatar';
+import {Fragment} from 'react';
 
 const solutions = [
   {
@@ -23,13 +23,15 @@ const solutions = [
   },
 ];
 
-interface Props {
-  className?: string;
-}
+export default function NotifyDropdown() {
+  const auth: boolean = false;
 
-const NotifyDropdown: FC<Props> = ({ className = "hidden sm:block" }) => {
+  if (!auth) {
+    return null;
+  }
+
   return (
-    <div className={className}>
+    <div>
       <Popover className="relative">
         {({ open }) => (
           <>
@@ -110,5 +112,3 @@ const NotifyDropdown: FC<Props> = ({ className = "hidden sm:block" }) => {
     </div>
   );
 };
-
-export default NotifyDropdown;
