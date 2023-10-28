@@ -6,7 +6,7 @@ import NcLink from 'components/NcLink/NcLink';
 import Heading2 from 'components/Heading/Heading2';
 import Image from 'components/Image';
 import Layout from '../../other/layout';
-import axios from 'axios';
+import http from '../../api/http';
 
 const loginSocials = [
   {
@@ -17,19 +17,24 @@ const loginSocials = [
 ];
 
 class PageSignUp extends Component {
+  state = {name: '', email: '', password: ''};
+
+  handleChange = (event: any) => {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    this.setState({
+      [name]: value
+    });
+  };
+
   handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    axios
-      .post('baseURL', {
-        title: 'Hello World!',
-        body: 'This is a new post.'
+    http.post(`/api/v2/auth/register`, this.state)
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
       })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   render() {
@@ -79,6 +84,9 @@ class PageSignUp extends Component {
             </span>
               <Input
                 type="text"
+                name="name"
+                value={this.state.name}
+                onChange={this.handleChange}
                 placeholder="Jonh Smith"
                 className="mt-1"
               />
@@ -89,6 +97,9 @@ class PageSignUp extends Component {
             </span>
               <Input
                 type="email"
+                name="email"
+                value={this.state.email}
+                onChange={this.handleChange}
                 placeholder="example@example.com"
                 className="mt-1"
               />
@@ -97,7 +108,13 @@ class PageSignUp extends Component {
             <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200">
               Password
             </span>
-              <Input type="password" className="mt-1"/>
+              <Input
+                type="password"
+                name="password"
+                value={this.state.password}
+                onChange={this.handleChange}
+                className="mt-1"
+              />
             </label>
             <ButtonPrimary type="submit">Continue</ButtonPrimary>
           </form>

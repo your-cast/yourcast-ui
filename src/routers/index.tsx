@@ -66,14 +66,12 @@ const MyRoutes = () => {
   return (
     <BrowserRouter>
       <SiteHeader/>
-
       <Routes>
         {pages.map(({component: Component, path}, index) => {
           return <Route key={index} element={<Component/>} path={path}/>;
         })}
         <Route element={<Page404/>}/>
       </Routes>
-
       <Footer/>
       <MusicPlayer/>
     </BrowserRouter>
