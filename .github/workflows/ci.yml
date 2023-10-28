@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'release/*'
+  pull_request:
+    branches:
+      - 'main'
+      - 'release/*'
+
+jobs:
+  ci:
+    name: CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build
+        run: yarn build
+
+  tests:
+    name: TESTS
+    needs: ci
+    runs-on: ubuntu-latest
+    container: node:20.5.1-alpine
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: yarn install
+
+  #      - name: Run tests
+  #        run: yarn test
+
+  deploy:
+    name: DEPLOY
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: docker login
+        env:
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag kuchura/your-cast-frontend:1.0.0-$(echo $GITHUB_SHA | cut -c1-7)
+
+      - name: Docker Push
+        run: docker push kuchura/your-cast-frontend:1.0.0-$(echo $GITHUB_SHA | cut -c1-7)
