@@ -1,0 +1,18 @@
+.header-logo {
+  width: 300px;
+}
+
+.content {
+  overflow-y: auto;
+  overflow-x: hidden;
+  outline: none;
+  position: relative;
+  padding: 30px;
+  margin-right: 30px;
+  border-radius: 15px;
+  background-color: #f4f5fd;
+}
+
+.card-img-top {
+  max-height: 450px;
+}

@@ -1,0 +1,338 @@
+<div class="content">
+  <div class="page-header d-md-flex justify-content-between">
+    <div>
+      <h3>Edit or update your show</h3>
+      <p class="text-muted">Give your show a title and add some basic information, to get you started.</p>
+    </div>
+    <div class="mt-3 mt-md-0" *ngIf="selectedTab === 'episodes'">
+      <div class="col">
+        <div ngbDropdown class="d-inline-block">
+          <button type="button" class="btn btn-primary ml-0 ml-md-2 mt-2 mt-md-0 dropdown-toggle" ngbDropdownToggle>
+            Create
+          </button>
+          <div ngbDropdownMenu aria-labelledby="dropdownActions">
+            <button ngbDropdownItem class="dropdown-item">Add Episode</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="!isLoading">
+    <div class="col-md-12">
+      <ul class="nav nav-tabs mb-3" role="tablist">
+        <li class="nav-item">
+          <button (click)="handleChangeTab('info')"
+                  [class]="selectedTab === 'info' ? 'nav-link active' : 'nav-link'">
+            Main info
+          </button>
+        </li>
+        <li class="nav-item">
+          <button (click)="handleChangeTab('episodes')"
+                  [class]="selectedTab === 'episodes' ? 'nav-link active' : 'nav-link'">
+            Episodes
+          </button>
+        </li>
+        <li class="nav-item">
+          <button (click)="handleChangeTab('settings')"
+                  [class]="selectedTab === 'settings' ? 'nav-link active' : 'nav-link'">
+            Settings
+          </button>
+        </li>
+        <li class="nav-item">
+          <button (click)="handleChangeTab('data')"
+                  [class]="selectedTab === 'data' ? 'nav-link active' : 'nav-link'">
+            Data
+          </button>
+        </li>
+        <li class="nav-item disabled">
+          <button id="web" class="nav-link disabled">Web</button>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div [class]="selectedTab === 'info' ? 'tab-pane fade show active' : 'tab-pane fade'">
+          <div class="row">
+            <div class="col-md-12">
+              <form [formGroup]="form">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="card">
+                      <div class="card-header">Show cover</div>
+                      <div class="card-body">
+                        <figure>
+                          <img class="rounded-pill w-450 display-center" [src]="image" alt="artwork" *ngIf="image">
+                          <img class="rounded-pill w-450 display-center" src="/assets/image/placeholder-image.png"
+                               alt="artwork" *ngIf="!image">
+                        </figure>
+                        <input type="file" accept=".png, .jpg, .jpeg" hidden #uploader (change)="uploadFile($event)">
+                        <button type="button" class="btn btn-primary" (click)="uploader.click()">Change Artwork</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="card">
+                      <div class="card-header">
+                        Main information
+                      </div>
+                      <div class="card-body">
+                        <div class="form-group">
+                          <label for="title">Title</label>
+                          <input id="title" formControlName="title" class="form-control" placeholder="Your title"
+                                 required>
+                          <span class="text-danger"
+                                *ngIf="form.controls['title'].touched && form.controls['title'].errors">
+                            Title is required
+                          </span>
+                        </div>
+                        <div class="form-group">
+                          <label for="summary">Summary</label>
+                          <ckeditor id="summary" [editor]="editor" [data]="data"
+                                    (change)="handleChangeSummary($event)"></ckeditor>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                          <label for="language">Language</label>
+                          <select id="language" class="form-control" formControlName="language">
+                            <option *ngFor="let language of languages" [value]="language.code">{{ language.value }}
+                            </option>
+                          </select>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                          <label for="type">Show format</label>
+                          <div class="form-item-control">
+                            <div class="form-item-control-input">
+                              <div class="btn-group" id="type" role="group">
+                                <button type="button"
+                                        class="{{ form.value.format === 'episodic' ? 'btn btn-info' : 'btn btn-light' }}"
+                                        (click)="handleChangeType()">Episodic
+                                </button>
+                                <button type="button"
+                                        class="{{ form.value.format === 'serial' ? 'btn btn-info' : 'btn btn-light' }}"
+                                        (click)="handleChangeType()">Serial
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="explicit">Explicit</label>
+                          <div class="form-item-control">
+                            <div class="form-item-control-input">
+                              <div class="btn-group" id="explicit" role="group">
+                                <button type="button"
+                                        class="{{ form.value.explicit ? 'btn btn-light' : 'btn btn-info' }}"
+                                        (click)="handleChangeExplicit()">No
+                                </button>
+                                <button type="button"
+                                        class="{{ form.value.explicit ? 'btn btn-info' : 'btn btn-light' }}"
+                                        (click)="handleChangeExplicit()">Yes
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header">
+                    Details
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="category">Category</label>
+                          <select class="form-control" id="category" formControlName="category">
+                            <optgroup *ngFor="let category of categories" label="{{ category.value }}">
+                              <option *ngFor="let children of category.children"
+                                      value="{{ children.code }}">{{ children.value }}
+                              </option>
+                            </optgroup>
+                          </select>
+                          <span class="text-danger" *ngIf="form.controls['category'].errors">
+                            Category is required
+                          </span>
+                        </div>
+                        <div class="form-group">
+                          <label for="link">Link</label>
+                          <input type="text" class="form-control" formControlName="link" id="link"
+                                 placeholder="https://your-cast.com/show/name">
+                          <small id="linkHelp" class="form-text text-muted">
+                            This is the website associated with your podcast.
+                            It can also be changed to any URL you like, including your website, blog, Facebook page, or
+                            any other
+                            URL.
+                          </small>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="keywords">Keywords</label>
+                          <input type="text" class="form-control" formControlName="keywords" id="keywords"
+                                 placeholder="e.g., sport, football">
+                          <small id="keywordsHelp" class="form-text text-muted">
+                            Comma separated list of keywords.
+                            Can include the theme, topic keywords, location, guest names, etc...
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header">
+                    Author Details
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="author">Author</label>
+                          <input type="text" class="form-control" formControlName="author" id="author"
+                                 placeholder="Enter author">
+                          <span class="text-danger"
+                                *ngIf="form.controls['author'].touched && form.controls['author'].errors">
+                Author is required
+              </span>
+                          <small id="authorHelp" class="form-text text-muted">
+                            The content of this tag is shown in the Artist column in iTunes.
+                          </small>
+                        </div>
+                        <div class="form-group">
+                          <label for="owner">Owner Name</label>
+                          <input type="text" class="form-control" formControlName="owner" id="owner"
+                                 placeholder="Enter owner">
+                          <span class="text-danger"
+                                *ngIf="form.controls['owner'].touched && form.controls['owner'].errors">
+                Owner Name is required
+              </span>
+                          <small id="ownerHelp" class="form-text text-muted">
+                            That will be used to contact the owner of the podcast for communication specifically about
+                            the
+                            podcast.
+                            It will not be publicly displayed.
+                          </small>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="copyright">Copyright</label>
+                          <input type="text" class="form-control" formControlName="copyright" id="copyright"
+                                 placeholder="Enter copyright">
+                          <small id="copyrightHelp" class="form-text text-muted">
+                            Copyright is required to submit on apps such as Apple Podcast.
+                          </small>
+                        </div>
+                        <div class="form-group">
+                          <label for="email">Owner Email</label>
+                          <input type="email" class="form-control" formControlName="ownerEmail" id="email"
+                                 placeholder="Enter email">
+                          <span class="text-danger"
+                                *ngIf="form.controls['ownerEmail'].touched && form.controls['ownerEmail'].errors">
+                Owner Email is required
+              </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header">
+                    Show status
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="status">Status</label>
+                          <div class="form-item-control">
+                            <div class="form-item-control-input">
+                              <div class="btn-group" id="status" role="group">
+                                <button type="button"
+                                        class="{{ form.value.status ? 'btn btn-success' : 'btn btn-light' }}"
+                                        (click)="handleChangeStatus()">Enabled
+                                </button>
+                                <button type="button"
+                                        class="{{ !form.value.status ? 'btn btn-warning' : 'btn btn-light' }}"
+                                        (click)="handleChangeStatus()">Draft
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          <small id="statusHelp" class="form-text text-muted">
+                            Status your show, for other platform.
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row text-center justify-content-end">
+                      <div class="mt-2 mr-5 mb-2">
+                        <button class="btn btn-success" type="button" [disabled]="isLoading" (click)="submitForm()">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-2" role="status"
+                    aria-hidden="true"></span>
+                          {{ isLoading ? 'Loading...' : 'Update' }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div [class]="selectedTab === 'episodes' ? 'tab-pane fade show active' : 'tab-pane fade'">
+        <div class="row">
+          <div class="col-md-12">
+            <table id="recent-episodes" class="table dataTable no-footer" role="grid">
+              <thead>
+              <tr role="row">
+                <th scope="col">#</th>
+                <th scope="col">Cover</th>
+                <th scope="col">Episode name</th>
+                <th scope="col">Status</th>
+                <th scope="col">Format</th>
+                <th scope="col">Created</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr role="row" class="odd" *ngFor="let episode of episodes">
+                <td>{{ episode.id }}</td>
+                <td>
+                  <img class="rounded-pill w-70" [src]="episode.cover" alt="artwork" *ngIf="episode.cover">
+                  <img class="rounded-pill w-70" src="/assets/image/placeholder-image.png" alt="artwork" *ngIf="!episode.cover">
+                </td>
+                <td>{{ episode.title }}</td>
+                <td>
+                  <span class="badge {{ episode.status === 'drafted' ? 'bg-warning-bright text-warning' : 'bg-success-bright text-success' }}">{{ episode.status }}</span>
+                </td>
+                <td>
+                  <span class="badge bg-info-bright text-info">{{ episode.format }}</span>
+                </td>
+                <td>{{ episode.created_at | date }}</td>
+              </tr>
+              </tbody>
+              <tfoot>
+<!--              <ngb-pagination [page]="1"-->
+<!--                              [pageSize]="12"-->
+<!--                              [collectionSize]="32" />-->
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <div [class]="selectedTab === 'settings' ? 'tab-pane fade show active' : 'tab-pane fade'">
+          Lorem ipsum dolor sit amet.
+        </div>
+        <div [class]="selectedTab === 'data' ? 'tab-pane fade show active' : 'tab-pane fade'">
+          Lorem ipsum dolor sit amet.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

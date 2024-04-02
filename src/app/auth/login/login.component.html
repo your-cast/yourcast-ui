@@ -1,0 +1,27 @@
+<div class="form-membership">
+  <div class="form-wrapper">
+    <div id="logo">
+      <img class="header-logo" src="./assets/image/your-cast-logo-black.png" alt="image">
+    </div>
+    <h5>Sign in</h5>
+    <form [formGroup]="form" id="login-form">
+      <div class="form-group">
+        <input type="email" formControlName="email" class="form-control" placeholder="Email" required autofocus>
+      </div>
+      <div class="form-group">
+        <input type="password" formControlName="password" class="form-control" placeholder="Password" required>
+      </div>
+      <div class="form-group d-flex justify-content-between">
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" checked="" id="customCheck1">
+          <label class="custom-control-label" for="customCheck1">Remember me</label>
+        </div>
+        <a routerLink="/auth/reset">Reset password</a>
+      </div>
+      <button class="btn btn-primary btn-block" (click)="signIn()">Sign in</button>
+      <hr>
+      <p class="text-muted">Don't have an account?</p>
+      <a routerLink="/auth/registration" class="btn btn-outline-light btn-sm">Register now!</a>
+    </form>
+  </div>
+</div>
