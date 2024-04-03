@@ -1,5 +1,7 @@
-/* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap';
+/* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
 
-@import "assets/theme";
-@import "assets/custom";
+@import "assets/styles/main";
+@import "assets/styles/themes";
+@import "assets/styles/user-themes";
+@import "assets/styles/tailwind";

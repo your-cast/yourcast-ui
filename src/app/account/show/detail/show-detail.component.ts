@@ -100,7 +100,7 @@ export class ShowDetailComponent implements OnInit {
       this.prepareForm();
     }, error => {
       this.isLoading = false;
-      this.alertService.error('Something want wrong!');
+      // this.alertService.error('Something want wrong!');
     });
   }
 
@@ -148,7 +148,7 @@ export class ShowDetailComponent implements OnInit {
     };
     this.showService.updateShow(formData, this.showId).subscribe(response => {
       this.router.navigate(['/shows/list']);
-      this.alertService.success('Show updated.');
+      // this.alertService.success('Show updated.');
     });
     this.isLoading = false;
   }

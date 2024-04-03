@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthService} from "../../common/services/auth.service";
 import {AlertService} from "../../common/services/alert.service";
+import {AlertType} from '../../common/models/alert.types';
 
 @Component({
   selector: 'app-registration',
@@ -12,11 +13,18 @@ import {AlertService} from "../../common/services/alert.service";
 export class RegistrationComponent implements OnInit {
   showSpinner: boolean;
 
-  form: FormGroup = new FormGroup({
-    'name': new FormControl('', Validators.required),
-    'email': new FormControl('', Validators.required),
-    'password': new FormControl('', Validators.required),
-    'passwordConfirmation': new FormControl('', Validators.required)
+  alert: { type: AlertType; message: string } = {
+    type: 'success',
+    message: ''
+  };
+
+  showAlert: boolean = false;
+
+  signUpForm: FormGroup = new FormGroup({
+    name: new FormControl('', Validators.required),
+    email: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
+    passwordConfirmation: new FormControl('', Validators.required)
   });
 
   constructor(
@@ -35,11 +43,11 @@ export class RegistrationComponent implements OnInit {
 
   register(): void {
     this.showSpinner = true;
-    this.authService.register(this.form.value)
+    this.authService.register(this.signUpForm.value)
       .subscribe((result: any): void => {
           this.showSpinner = false;
           if (result) {
-            this.alertService.success('Registration complete. Enter your credential for auth.');
+            // this.alertService.success('Registration complete. Enter your credential for auth.');
             this.router.navigate(['/auth/login']);
           }
         },

@@ -1,36 +1,35 @@
 import {Injectable} from '@angular/core';
-import {ToastrService} from "ngx-toastr";
+import {Observable, ReplaySubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlertService {
-  constructor(
-    private toastr: ToastrService
-  ) {
+  private readonly _onDismiss: ReplaySubject<string> = new ReplaySubject<string>(1);
+  private readonly _onShow: ReplaySubject<string> = new ReplaySubject<string>(1);
+
+  constructor() {
   }
 
-  success(message: string): void {
-    this.toastr.success(message, '', {
-      timeOut: 6000
-    });
+  get onDismiss(): Observable<any> {
+    return this._onDismiss.asObservable();
   }
 
-  error(message: string): void {
-    this.toastr.error(message, '', {
-      timeOut: 6000
-    });
+  get onShow(): Observable<any> {
+    return this._onShow.asObservable();
   }
 
-  info(message: string): void {
-    this.toastr.info(message, '', {
-      timeOut: 6000
-    });
+  dismiss(name: string): void {
+    if (!name) {
+      return;
+    }
+    this._onDismiss.next(name);
   }
 
-  warn(message: string): void {
-    this.toastr.warning(message, '', {
-      timeOut: 6000
-    });
+  show(name: string): void {
+    if (!name) {
+      return;
+    }
+    this._onShow.next(name);
   }
 }

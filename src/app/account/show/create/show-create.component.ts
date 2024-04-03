@@ -2,14 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {forkJoin, Observable} from 'rxjs';
-import {Timezone} from "../../../common/models/timezone";
-import {Language} from "../../../common/models/language";
-import {AlertService} from "../../../common/services/alert.service";
-import {ImageService} from "../../../common/services/image.service";
-import {DictionaryService} from "../../../common/services/dictionary.service";
-import {ShowService} from "../../../common/services/show.service";
+import {Timezone} from '../../../common/models/timezone';
+import {Language} from '../../../common/models/language';
+import {AlertService} from '../../../common/services/alert.service';
+import {ImageService} from '../../../common/services/image.service';
+import {DictionaryService} from '../../../common/services/dictionary.service';
+import {ShowService} from '../../../common/services/show.service';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import {ChangeEvent} from "@ckeditor/ckeditor5-angular";
+import {ChangeEvent} from '@ckeditor/ckeditor5-angular';
 
 @Component({
   selector: 'app-show-create',
@@ -43,7 +43,7 @@ export class ShowCreateComponent implements OnInit {
     'author': new FormControl('', Validators.required),
     'owner': new FormControl('', Validators.required),
     'ownerEmail': new FormControl('', Validators.required),
-    'copyright': new FormControl(''),
+    'copyright': new FormControl('')
   });
 
   public editor = ClassicEditor;
@@ -73,7 +73,7 @@ export class ShowCreateComponent implements OnInit {
       this.languages = value[1].result;
       this.categories = value[2].result;
     }, error => {
-      this.alertService.error('Something want wrong!');
+      // this.alertService.error('Something want wrong!');
     });
   }
 
@@ -100,7 +100,7 @@ export class ShowCreateComponent implements OnInit {
     };
     this.showService.createShow(formData).subscribe(response => {
       this.router.navigate(['/shows/list']);
-      this.alertService.success('New show created!');
+      // this.alertService.success('New show created!');
     });
     this.isLoading = false;
   }
