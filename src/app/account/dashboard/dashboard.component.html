@@ -1,107 +1,47 @@
-<div class="content">
-  <div class="page-header d-md-flex justify-content-between">
-    <div>
-      <h3>Welcome back, Dmytro</h3>
-      <p class="text-muted">This page shows an overview for your account.</p>
-    </div>
-    <div class="mt-3 mt-md-0">
-      <div class="col">
-        <div ngbDropdown class="d-inline-block">
-          <button type="button" class="btn btn-primary ml-0 ml-md-2 mt-2 mt-md-0 dropdown-toggle" ngbDropdownToggle>
-            Create
-          </button>
-          <div ngbDropdownMenu aria-labelledby="dropdownActions">
-            <button (click)="handleCreateNewShow()" ngbDropdownItem class="dropdown-item">Add Show</button>
-            <button ngbDropdownItem class="dropdown-item" *ngIf="shows?.length >= 1">Add Episode</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <h6 class="card-title">Your shows</h6>
-          <div class="table-responsive">
-            <table id="your-shows" class="table dataTable no-footer">
-              <thead>
-              <tr role="row">
-                <th scope="col">#</th>
-                <th scope="col">Cover</th>
-                <th scope="col">Episode name</th>
-                <th scope="col">Status</th>
-                <th scope="col">Format</th>
-                <th scope="col">Created</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr role="row" class="odd" *ngFor="let show of shows">
-                <td class="navigate-link" (click)="handleMoveToShowDetail(show.id)">{{ show.id }}</td>
-                <td>
-                  <img class="rounded-pill w-70" [src]="show.cover" alt="artwork" *ngIf="show.cover">
-                  <img class="rounded-pill w-70" src="/assets/image/placeholder-image.png" alt="artwork"
-                       *ngIf="!show.cover">
-                </td>
-                <td>{{ show.title }}</td>
-                <td>
-                  <span
-                    [class]="show.status === 'enabled' ? 'badge bg-success-bright text-success' : 'badge bg-warning-bright text-warning'">{{ show.status }}</span>
-                </td>
-                <td>
-                  <span class="badge bg-info-bright text-info">{{ show.format }}</span>
-                </td>
-                <td>{{ show.created_at | date }}</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <h6 class="card-title">Recent Episodes</h6>
-          <div class="table-responsive">
-            <table id="recent-episodes" class="table dataTable no-footer" role="grid">
-              <thead>
-              <tr role="row">
-                <th scope="col">#</th>
-                <th scope="col">Cover</th>
-                <th scope="col">Episode name</th>
-                <th scope="col">Status</th>
-                <th scope="col">Show</th>
-                <th scope="col">Format</th>
-                <th scope="col">Created</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr role="row" class="odd" *ngFor="let episode of episodes"
-                  (click)="handleMoveToEpisodeDetail(episode.id)">
-                <td>{{ episode.id }}</td>
-                <td>
-                  <img class="rounded-pill w-70" [src]="episode.cover" alt="artwork" *ngIf="episode.cover">
-                  <img class="rounded-pill w-70" src="/assets/image/placeholder-image.png" alt="artwork"
-                       *ngIf="!episode.cover">
-                </td>
-                <td>{{ episode.title }}</td>
-                <td>
-                  <span class="badge bg-warning-bright text-warning">{{ episode.status }}</span>
-                </td>
-                <td>{{ episode.show_id }}</td>
-                <td>
-                  <span class="badge bg-info-bright text-info">{{ episode.format }}</span>
-                </td>
-                <td>{{ episode.created_at | date }}</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+<div class="flex flex-col flex-auto min-w-0">
+  <div class="flex-auto border-t -mt-px pt-4 sm:pt-6">
+    <div class="w-full max-w-screen-xl mx-auto">
+      <mat-tab-group class="sm:px-2" mat-stretch-tabs="false">
+        <mat-tab label="Shows">
+          <ng-template matTabContent>
+            <div class="grid grid-cols-1 sm:grid-cols-6 gap-6 w-full min-w-0">
+              <div class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                <div class="text-lg font-medium tracking-tight leading-6 truncate">Shows</div>
+                <div class="flex flex-col flex-auto mt-2 overflow-x-auto">
+                  <table class="min-w-240 overflow-y-visible" mat-table [dataSource]="episodes">
+
+                    <ng-container matColumnDef="type" sticky>
+                      <th mat-header-cell *matHeaderCellDef>Type</th>
+                      <td mat-cell *matCellDef="let budget">
+                          <span class="flex items-center">
+                              <span class="w-2 h-2 rounded-full"
+                                    [ngClass]="{'bg-blue-500': budget.id === 1,
+                                              'bg-red-500': budget.id === 2,
+                                              'bg-green-500': budget.id === 3,
+                                              'bg-amber-500': budget.id === 4,
+                                              'bg-indigo-500': budget.id === 5}"></span>
+                              <span class="ml-3 leading-4">{{ budget.type }}</span>
+                          </span>
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="total">
+                      <th mat-header-cell *matHeaderCellDef>Total Budget</th>
+                      <td mat-cell *matCellDef="let budget">
+                        <span class="font-medium text-right">
+
+                        </span>
+                      </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
     </div>
   </div>
 </div>

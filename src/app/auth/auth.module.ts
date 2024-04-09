@@ -21,7 +21,6 @@ import {MatIconModule} from '@angular/material/icon';
     FormsModule,
     ReactiveFormsModule,
     RouterLink,
-    MaterialModule,
     AlertComponent,
     LayoutModule,
     ReactiveFormsModule,

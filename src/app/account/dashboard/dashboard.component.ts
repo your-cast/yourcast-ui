@@ -11,6 +11,7 @@ export class DashboardComponent implements OnInit {
   showSpinner: boolean;
   shows: any;
   episodes: any = [];
+  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
 
   constructor(
     private showService: ShowService,

@@ -18,8 +18,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {AlertService} from '../../services/alert.service';
 import {AlertAppearance, AlertType} from '../../models/alert.types';
-import {FuseUtilsService} from '../../../../../../ui-example/demo/src/@fuse/services/utils/utils.service';
 import {filter, Subject, takeUntil} from 'rxjs';
+import {FuseUtilsService} from '../../services/utils.service';
 
 @Component({
   selector: 'alert',
@@ -46,9 +46,6 @@ export class AlertComponent implements OnChanges, OnInit, OnDestroy {
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
-  /**
-   * Constructor
-   */
   constructor(
     private _changeDetectorRef: ChangeDetectorRef,
     private _fuseAlertService: AlertService,
@@ -56,13 +53,6 @@ export class AlertComponent implements OnChanges, OnInit, OnDestroy {
   ) {
   }
 
-  // -----------------------------------------------------------------------------------------------------
-  // @ Accessors
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * Host binding for component classes
-   */
   @HostBinding('class') get classList(): any {
     /* eslint-disable @typescript-eslint/naming-convention */
     return {

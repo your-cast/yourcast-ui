@@ -10,6 +10,7 @@ import {WelcomeComponent} from './welcome/welcome.component';
 import {ShowCreateComponent} from './show/create/show-create.component';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 import {ShowDetailComponent} from './show/detail/show-detail.component';
+import {MaterialModule} from '../material/material.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import {ShowDetailComponent} from './show/detail/show-detail.component';
     FormsModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    MaterialModule,
     RouterModule,
     SharedModule,
     CKEditorModule

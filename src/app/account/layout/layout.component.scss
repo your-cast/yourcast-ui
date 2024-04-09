@@ -1,9 +1,23 @@
-.dropdown-toggle {
-  .avatar {
-    cursor: pointer;
+layout {
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  > * {
+    position: relative;
+    display: flex;
+    flex: 1 1 auto;
+    width: 100%;
   }
 
-  span {
-    cursor: pointer;
+  router-outlet {
+    + * {
+      position: relative;
+      display: flex;
+      flex: 1 1 auto;
+      width: 100%;
+    }
   }
 }
