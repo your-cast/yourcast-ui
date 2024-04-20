@@ -48,7 +48,7 @@ export class ResetComponent implements OnInit {
       .subscribe((result: any) => {
           this.showSpinner = false;
           if (result) {
-            this.alertService.success('Registration complete. Enter your credential for auth.');
+            // this.alertService.success('Registration complete. Enter your credential for auth.');
             this.router.navigate(['/auth/login']);
           }
         },

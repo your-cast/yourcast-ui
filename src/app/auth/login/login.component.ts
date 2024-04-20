@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from "../../common/services/auth.service";
-import {AlertService} from "../../common/services/alert.service";
+import {AuthService} from '../../common/services/auth.service';
+import {AlertService} from '../../common/services/alert.service';
+import {AlertType} from '../../common/models/alert.types';
 
 @Component({
   selector: 'app-login',
@@ -12,9 +13,16 @@ import {AlertService} from "../../common/services/alert.service";
 export class LoginComponent implements OnInit {
   showSpinner: boolean;
 
-  form: FormGroup = new FormGroup({
-    'email': new FormControl('', Validators.required),
-    'password': new FormControl('', Validators.required)
+  alert: { type: AlertType; message: string } = {
+    type: 'success',
+    message: ''
+  };
+
+  showAlert: boolean = false;
+
+  signInForm: FormGroup = new FormGroup({
+    email: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
   });
 
   constructor(
@@ -34,7 +42,7 @@ export class LoginComponent implements OnInit {
 
   signIn(): void {
     this.showSpinner = true;
-    this.authService.login(this.form.value)
+    this.authService.login(this.signInForm.value)
       .subscribe((result: any): void => {
           this.showSpinner = false;
           if (result && this.authService.isLoggedIn()) {
@@ -46,7 +54,7 @@ export class LoginComponent implements OnInit {
           }
         },
         (): void => {
-          this.alertService.error('Invalid credentials. Email not found or wrong password.');
+          this.alertService.show('Invalid credentials. Email not found or wrong password.');
           this.showSpinner = false;
         });
   }

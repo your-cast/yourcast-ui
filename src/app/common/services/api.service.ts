@@ -63,13 +63,13 @@ export class ApiService {
 
   handleError(error: any): Error {
     if (error.status === 401) {
-      this.alertService.error('You are not authorized to access this page.');
+      // this.alertService.error('You are not authorized to access this page.');
       localStorage.removeItem('token');
       this.router.navigate(['/auth/login']);
     }
 
     if (error.status === 0) {
-      this.alertService.error('Check your internet connection.');
+      // this.alertService.error('Check your internet connection.');
       localStorage.removeItem('token');
       this.router.navigate(['/auth/login']);
     }

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {forkJoin, Observable, of} from 'rxjs';
+import {forkJoin, Observable} from 'rxjs';
 import {Timezone} from '../../../common/models/timezone';
 import {Language} from '../../../common/models/language';
 import {AlertService} from '../../../common/services/alert.service';
@@ -11,7 +11,7 @@ import {ShowService} from '../../../common/services/show.service';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {ChangeEvent} from '@ckeditor/ckeditor5-angular';
 import {EpisodesService} from '../../../common/services/episodes.service';
-import {catchError, map} from 'rxjs/operators';
+import {PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-show-detail',
@@ -19,9 +19,9 @@ import {catchError, map} from 'rxjs/operators';
   styleUrls: ['./show-detail.component.scss']
 })
 export class ShowDetailComponent implements OnInit {
-  selectedTab: string = 'info';
-
   showId: string | null = null;
+  displayedColumns: string[] = ['id', 'artwork', 'title', 'season', 'episode', 'status', 'created', 'actions'];
+  page: number = 1;
 
   isLoading: boolean = true;
   image: string = '';
@@ -77,7 +77,7 @@ export class ShowDetailComponent implements OnInit {
 
   prepareData(): void {
     this.show$ = this.showService.getShowInfo(this.showId);
-    this.episodes$ = this.episodesService.showEpisodesList(this.showId);
+    this.episodes$ = this.episodesService.showEpisodesList(this.showId, this.page);
     this.timezones$ = this.dictionaryService.getTimezonesDictionary();
     this.languages$ = this.dictionaryService.getLanguagesDictionary();
     this.categories$ = this.dictionaryService.getCategoriesDictionary();
@@ -100,7 +100,7 @@ export class ShowDetailComponent implements OnInit {
       this.prepareForm();
     }, error => {
       this.isLoading = false;
-      this.alertService.error('Something want wrong!');
+      // this.alertService.error('Something want wrong!');
     });
   }
 
@@ -148,7 +148,7 @@ export class ShowDetailComponent implements OnInit {
     };
     this.showService.updateShow(formData, this.showId).subscribe(response => {
       this.router.navigate(['/shows/list']);
-      this.alertService.success('Show updated.');
+      // this.alertService.success('Show updated.');
     });
     this.isLoading = false;
   }
@@ -182,11 +182,14 @@ export class ShowDetailComponent implements OnInit {
     this.form.controls['description'].setValue(editor.getData());
   }
 
-  handleChangeTab(tab: string): void {
-    this.selectedTab = tab;
-  }
-
   handleMoveToEpisodeDetail(id: string): void {
     this.router.navigate(['/episode/detail/' + id]);
+  }
+
+  handlePageBottom(event: PageEvent): void {
+    this.page = event.pageIndex + 1;
+    this.episodesService.showEpisodesList(this.showId, this.page).subscribe(response => {
+      this.episodes = response.result;
+    });
   }
 }
