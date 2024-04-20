@@ -9,9 +9,8 @@ import {ShowService} from '../../common/services/show.service';
 })
 export class DashboardComponent implements OnInit {
   showSpinner: boolean;
-  shows: any;
-  episodes: any = [];
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  shows: any = [];
+  displayedColumns: string[] = ['id', 'artwork', 'title', 'status', 'created', 'actions'];
 
   constructor(
     private showService: ShowService,
@@ -28,10 +27,6 @@ export class DashboardComponent implements OnInit {
     this.showService.showList().subscribe(response => {
       this.shows = response.result;
     });
-  }
-
-  handleMoveToEpisodeDetail(id: string): void {
-    this.router.navigate(['/episode/detail/' + id]);
   }
 
   handleMoveToShowDetail(id: string): void {

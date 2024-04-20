@@ -8,31 +8,74 @@
               <div class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
                 <div class="text-lg font-medium tracking-tight leading-6 truncate">Shows</div>
                 <div class="flex flex-col flex-auto mt-2 overflow-x-auto">
-                  <table class="min-w-240 overflow-y-visible" mat-table [dataSource]="episodes">
+                  <table class="min-w-240 overflow-y-visible" mat-table [dataSource]="shows">
 
-                    <ng-container matColumnDef="type" sticky>
-                      <th mat-header-cell *matHeaderCellDef>Type</th>
-                      <td mat-cell *matCellDef="let budget">
+                    <ng-container matColumnDef="id">
+                      <th mat-header-cell *matHeaderCellDef> ID</th>
+                      <td mat-cell *matCellDef="let element"> {{ element.id }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="artwork">
+                      <th mat-header-cell *matHeaderCellDef> Artwork</th>
+                      <td mat-cell *matCellDef="let element">
+                        <img class="rounded-pill w-20 p-1" [src]="element.artwork" alt="artwork"
+                             *ngIf="element.artwork">
+                        <img class="rounded-pill w-20 p-1" src="/assets/image/placeholder-image.png" alt="artwork"
+                             *ngIf="!element.artwork">
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="title">
+                      <th mat-header-cell *matHeaderCellDef> Name</th>
+                      <td mat-cell *matCellDef="let element"> {{ element.title }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status" sticky>
+                      <th mat-header-cell *matHeaderCellDef>Status</th>
+                      <td mat-cell *matCellDef="let element">
                           <span class="flex items-center">
                               <span class="w-2 h-2 rounded-full"
-                                    [ngClass]="{'bg-blue-500': budget.id === 1,
-                                              'bg-red-500': budget.id === 2,
-                                              'bg-green-500': budget.id === 3,
-                                              'bg-amber-500': budget.id === 4,
-                                              'bg-indigo-500': budget.id === 5}"></span>
-                              <span class="ml-3 leading-4">{{ budget.type }}</span>
+                                    [ngClass]="{'bg-blue-500': element.status === 'drafted',
+                                              'bg-green-500': element.status === 'enabled'}"></span>
+                              <span class="ml-3 leading-4">{{ element.status.toUpperCase() }}</span>
                           </span>
                       </td>
                     </ng-container>
 
-                    <ng-container matColumnDef="total">
-                      <th mat-header-cell *matHeaderCellDef>Total Budget</th>
-                      <td mat-cell *matCellDef="let budget">
+                    <ng-container matColumnDef="created">
+                      <th mat-header-cell *matHeaderCellDef>Created</th>
+                      <td mat-cell *matCellDef="let element">
                         <span class="font-medium text-right">
-
+                          {{ element.created_at | date }}
                         </span>
                       </td>
                     </ng-container>
+
+                    <ng-container matColumnDef="actions">
+                      <th mat-header-cell *matHeaderCellDef>Actions</th>
+                      <td mat-cell *matCellDef="let element">
+                        <span class="font-medium text-right">
+                          <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>more_vert</mat-icon>
+                          </button>
+                          <mat-menu #menu="matMenu">
+                            <button mat-menu-item>
+                              <mat-icon [svgIcon]="'heroicons_outline:plus-circle'"></mat-icon>
+                              <span>Add episode</span>
+                            </button>
+                            <button mat-menu-item (click)="handleMoveToShowDetail(element.id)">
+                              <mat-icon [svgIcon]="'heroicons_outline:eye'"></mat-icon>
+                              <span>View</span>
+                            </button>
+                            <button mat-menu-item>
+                              <mat-icon [svgIcon]="'heroicons_outline:trash'">trash</mat-icon>
+                              <span>Delete</span>
+                            </button>
+                          </mat-menu>
+                        </span>
+                      </td>
+                    </ng-container>
+
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                   </table>
