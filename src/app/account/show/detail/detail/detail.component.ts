@@ -1,39 +1,31 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Component, Input, OnInit} from '@angular/core';
 import {forkJoin, Observable} from 'rxjs';
-import {Timezone} from '../../../common/models/timezone';
-import {Language} from '../../../common/models/language';
-import {AlertService} from '../../../common/services/alert.service';
-import {ImageService} from '../../../common/services/image.service';
-import {DictionaryService} from '../../../common/services/dictionary.service';
-import {ShowService} from '../../../common/services/show.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {ChangeEvent} from '@ckeditor/ckeditor5-angular';
-import {EpisodesService} from '../../../common/services/episodes.service';
-import {PageEvent} from '@angular/material/paginator';
+import {Router} from '@angular/router';
+import {ShowService} from '../../../../common/services/show.service';
+import {ImageService} from '../../../../common/services/image.service';
+import {DictionaryService} from '../../../../common/services/dictionary.service';
+import {Language} from '../../../../common/models/language';
+import {Timezone} from '../../../../common/models/timezone';
 
 @Component({
   selector: 'app-show-detail',
-  templateUrl: './show-detail.component.html',
-  styleUrls: ['./show-detail.component.scss']
+  templateUrl: './detail.component.html',
+  styleUrls: ['./detail.component.scss']
 })
 export class ShowDetailComponent implements OnInit {
-  showId: string | null = null;
-  displayedColumns: string[] = ['id', 'artwork', 'title', 'season', 'episode', 'status', 'created', 'actions'];
-  page: number = 1;
+  @Input()
+  show: any = {};
 
   isLoading: boolean = true;
   image: string = '';
   data: string = '';
-  show: any = {};
   timezones: Timezone[] = [];
   languages: Language[] = [];
   categories: any = [];
-  episodes: any = [];
 
-  show$: Observable<any> | undefined;
-  episodes$: Observable<any> | undefined;
   timezones$: Observable<any> | undefined;
   languages$: Observable<any> | undefined;
   categories$: Observable<any> | undefined;
@@ -62,40 +54,30 @@ export class ShowDetailComponent implements OnInit {
   constructor(
     private router: Router,
     private showService: ShowService,
-    private episodesService: EpisodesService,
     private imageService: ImageService,
-    private alertService: AlertService,
     private dictionaryService: DictionaryService,
-    private activatedRoute: ActivatedRoute
   ) {
   }
 
-  ngOnInit() {
-    this.showId = this.activatedRoute.snapshot.paramMap.get('id');
+  ngOnInit(): void {
     this.prepareData();
   }
 
   prepareData(): void {
-    this.show$ = this.showService.getShowInfo(this.showId);
-    this.episodes$ = this.episodesService.showEpisodesList(this.showId, this.page);
     this.timezones$ = this.dictionaryService.getTimezonesDictionary();
     this.languages$ = this.dictionaryService.getLanguagesDictionary();
     this.categories$ = this.dictionaryService.getCategoriesDictionary();
 
     this.allRequestFinished$ = forkJoin([
-      this.show$,
-      this.episodes$,
       this.timezones$,
       this.languages$,
       this.categories$
     ]);
 
     this.allRequestFinished$.subscribe(value => {
-      this.show = value[0].result;
-      this.episodes = value[1].result;
-      this.timezones = value[2].result;
-      this.languages = value[3].result;
-      this.categories = value[4].result;
+      this.timezones = value[0].result;
+      this.languages = value[1].result;
+      this.categories = value[2].result;
       this.isLoading = false;
       this.prepareForm();
     }, error => {
@@ -103,6 +85,7 @@ export class ShowDetailComponent implements OnInit {
       // this.alertService.error('Something want wrong!');
     });
   }
+
 
   prepareForm(): void {
     this.image = this.show.artwork;
@@ -146,7 +129,7 @@ export class ShowDetailComponent implements OnInit {
       email_owner: this.form.controls['ownerEmail'].value,
       copyright: this.form.controls['copyright'].value
     };
-    this.showService.updateShow(formData, this.showId).subscribe(response => {
+    this.showService.updateShow(formData, this.show.id).subscribe(response => {
       this.router.navigate(['/shows/list']);
       // this.alertService.success('Show updated.');
     });
@@ -166,30 +149,7 @@ export class ShowDetailComponent implements OnInit {
     }
   }
 
-  handleChangeExplicit(): void {
-    this.form.get('explicit')?.setValue(!this.form.get('explicit')?.value);
-  }
-
-  handleChangeStatus(): void {
-    this.form.get('status')?.setValue(!this.form.get('status')?.value);
-  }
-
-  handleChangeType(): void {
-    this.form.get('format')?.setValue(this.form.get('format')?.value === 'episodic' ? 'serial' : 'episodic');
-  }
-
-  handleChangeSummary({editor}: ChangeEvent) {
+  handleChangeSummary({editor}: ChangeEvent): void {
     this.form.controls['description'].setValue(editor.getData());
-  }
-
-  handleMoveToEpisodeDetail(id: string): void {
-    this.router.navigate(['/episode/detail/' + id]);
-  }
-
-  handlePageBottom(event: PageEvent): void {
-    this.page = event.pageIndex + 1;
-    this.episodesService.showEpisodesList(this.showId, this.page).subscribe(response => {
-      this.episodes = response.result;
-    });
   }
 }

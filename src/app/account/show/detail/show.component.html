@@ -1,0 +1,81 @@
+<div class="flex flex-col flex-auto min-w-0">
+
+  <!-- Header -->
+  <div class="bg-card" *ngIf="show">
+    <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8">
+      <div class="flex flex-col sm:flex-row flex-auto sm:items-center min-w-0 my-8 sm:my-12">
+        <div class="flex flex-auto items-center min-w-0">
+          <div class="flex-0 w-16 h-16 rounded-full overflow-hidden">
+            <img [src]="show.artwork" alt="artwork" *ngIf="show.artwork">
+            <img src="/assets/image/placeholder-image.png" alt="artwork" *ngIf="!show.artwork">
+          </div>
+          <div class="flex flex-col min-w-0 ml-4">
+            <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
+              {{ show.title }}
+            </div>
+            <div class="flex items-center">
+              <div class="ml-1.5 leading-6 truncate text-secondary" [innerHTML]="show.description"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center mt-6 sm:mt-0 sm:ml-2 space-x-3">
+          <button mat-flat-button [color]="'primary'">
+            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:plus-circle'"></mat-icon>
+            <span class="ml-2">Add episode</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Project selector -->
+      <div
+        class="relative flex self-start pt-2 pb-1 pl-5 pr-4 cursor-pointer overflow-hidden rounded-t-xl border border-b-0 bg-default"
+        matRipple
+        [matMenuTriggerFor]="projectsMenu">
+        <div class="flex items-center">
+          <div class="overflow-hidden">
+            <div class="font-medium leading-6 truncate">{{ show.title }}</div>
+          </div>
+          <div class="flex items-center justify-center pl-2">
+            <mat-icon
+              class="icon-size-5"
+              [svgIcon]="'heroicons_mini:chevron-down'"></mat-icon>
+          </div>
+        </div>
+        <mat-menu #projectsMenu="matMenu" [xPosition]="'before'">
+          <button mat-menu-item>{{ show.title }}</button>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="flex-auto border-t -mt-px pt-4 sm:pt-6">
+    <div class="w-full max-w-screen-xl mx-auto">
+      <mat-tab-group class="sm:px-2" mat-stretch-tabs="false">
+        <mat-tab label="Episodes">
+          <ng-template matTabContent>
+            <app-show-episodes [show]="show" *ngIf="show"></app-show-episodes>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Detail">
+          <ng-template matTabContent>
+            <app-show-detail [show]="show" *ngIf="show"></app-show-detail>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Settings" disabled>
+          <ng-template matTabContent>
+            <div class="grid grid-cols-1 sm:grid-cols-6 gap-6 w-full min-w-0">
+              <div class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                <div class="text-lg font-medium tracking-tight leading-6 truncate">Settings</div>
+                <div class="flex flex-col flex-auto mt-2 overflow-x-auto">
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>

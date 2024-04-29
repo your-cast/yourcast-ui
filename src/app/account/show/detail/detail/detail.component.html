@@ -1,0 +1,148 @@
+<div class="grid grid-cols-1 sm:grid-cols-6 gap-6 w-full min-w-0">
+  <div class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+    <div class="text-lg font-medium tracking-tight leading-6 truncate">Detail</div>
+    <div>
+      <form [formGroup]="form">
+        <div class="flex justify-between pt-2">
+          <div class="w-1/2">
+            <img mat-card-image class="rounded-pill w-50 display-center" [src]="image" alt="artwork" *ngIf="image">
+            <img mat-card-image class="rounded-pill w-50 display-center" src="/assets/image/placeholder-image.png"
+                 alt="artwork" *ngIf="!image">
+            <p class="text-base pb-2">Cover art requirements</p>
+            <p class="text-sm">To be accepted by platforms like Apple Podcasts, covers should be:</p>
+            <ul class="pb-2 pt-1">
+              <li class="ps-5 text-sm text-gray-500">* at least 1400x1400 pixels</li>
+              <li class="ps-5 text-sm text-gray-500">* max 512 KB in file size</li>
+              <li class="ps-5 text-sm text-gray-500">* PNG or JPEG format</li>
+            </ul>
+            <input type="file" accept=".png, .jpg, .jpeg" hidden #uploader (change)="uploadFile($event)">
+            <button mat-stroked-button color="warn" (click)="uploader.click()">CHANGE ARTWORK</button>
+          </div>
+          <div class="w-1/2">
+            <mat-form-field class="w-full">
+              <mat-label>Title</mat-label>
+              <input matInput id="title" formControlName="title" placeholder="Your title">
+            </mat-form-field>
+
+            <h4>Summary</h4>
+            <ckeditor id="summary" [editor]="editor" [data]="data" (change)="handleChangeSummary($event)"></ckeditor>
+
+            <mat-divider class="p-2"></mat-divider>
+
+            <mat-form-field class="w-full">
+              <mat-label>Language</mat-label>
+              <mat-select id="language" formControlName="language">
+                <mat-option *ngFor="let language of languages" [value]="language.code">{{ language.value }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-divider class="p-2"></mat-divider>
+
+            <h4 class="p-1">Show format</h4>
+            <mat-button-toggle-group formControlName="format" aria-label="Show format">
+              <mat-button-toggle value="episodic">Episodic</mat-button-toggle>
+              <mat-button-toggle value="serial">Serial</mat-button-toggle>
+            </mat-button-toggle-group>
+
+            <h4 class="p-1">Explicit</h4>
+            <mat-button-toggle-group formControlName="explicit" aria-label="Explicit">
+              <mat-button-toggle [value]="true">Yes</mat-button-toggle>
+              <mat-button-toggle [value]="false">No</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+        </div>
+        <div class="flex justify-between pt-2">
+          <div class="w-1/2 pe-2">
+            <mat-form-field class="w-full">
+              <mat-label>Category</mat-label>
+              <mat-select id="category" formControlName="category">
+                <mat-optgroup *ngFor="let category of categories" label="{{ category.value }}">
+                  <mat-option *ngFor="let children of category.children"
+                              value="{{ children.code }}">{{ children.value }}
+                  </mat-option>
+                </mat-optgroup>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="w-full">
+              <mat-label>Link</mat-label>
+              <input matInput id="link" formControlName="link" placeholder="https://your-cast.com/show/name">
+            </mat-form-field>
+            <small class="text-sm text-gray-500">
+              This is the website associated with your podcast.
+              It can also be changed to any URL you like, including your website, blog, Facebook page, or any other URL.
+            </small>
+          </div>
+          <div class="w-1/2 ps-2">
+            <mat-form-field class="w-full">
+              <mat-label>Keywords</mat-label>
+              <textarea matInput formControlName="keywords" placeholder="e.g., sport, football"></textarea>
+            </mat-form-field>
+            <small class="text-sm text-gray-500">
+              Comma separated list of keywords.
+              Can include the theme, topic keywords, location, guest names, etc...
+            </small>
+          </div>
+        </div>
+        <div class="flex justify-between pt-2">
+          <div class="w-1/2 pe-2">
+            <mat-form-field class="w-full">
+              <mat-label>Author</mat-label>
+              <input matInput id="author" formControlName="author" placeholder="https://your-cast.com/show/name">
+            </mat-form-field>
+            <span class="text-danger" *ngIf="form.controls['author'].touched && form.controls['author'].errors">
+              Author is required
+            </span>
+            <small class="text-sm text-gray-500">
+              The content of this tag is shown in the Artist column in iTunes.
+            </small>
+            <mat-form-field class="w-full">
+              <mat-label>Owner Name</mat-label>
+              <input matInput id="owner" formControlName="owner" placeholder="Enter owner">
+            </mat-form-field>
+            <span class="text-danger" *ngIf="form.controls['owner'].touched && form.controls['owner'].errors">
+              Owner Name is required
+            </span>
+            <small class="text-sm text-gray-500">
+              That will be used to contact the owner of the podcast for communication specifically about the podcast.
+              It will not be publicly displayed.
+            </small>
+          </div>
+          <div class="w-1/2 ps-2">
+            <mat-form-field class="w-full">
+              <mat-label>Copyright</mat-label>
+              <input matInput id="copyright" formControlName="copyright" placeholder="Enter copyright">
+            </mat-form-field>
+            <span class="text-danger" *ngIf="form.controls['copyright'].touched && form.controls['copyright'].errors">
+              Author is required
+            </span>
+            <small class="text-sm text-gray-500">
+              Copyright is required to submit on apps such as Apple Podcast.
+            </small>
+            <mat-form-field class="w-full">
+              <mat-label>Copyright</mat-label>
+              <input matInput id="email" formControlName="ownerEmail" placeholder="Enter email">
+            </mat-form-field>
+            <span class="text-danger" *ngIf="form.controls['ownerEmail'].touched && form.controls['ownerEmail'].errors">
+              Owner Email is required
+            </span>
+          </div>
+        </div>
+        <div class="flex justify-between pt-2">
+          <div class="w-1/2">
+            <h4 class="p-1">Status</h4>
+            <mat-button-toggle-group formControlName="status" aria-label="Status">
+              <mat-button-toggle [value]="true">Enabled</mat-button-toggle>
+              <mat-button-toggle [value]="false">Draft</mat-button-toggle>
+            </mat-button-toggle-group>
+            <small class="text-sm text-gray-500">
+              Status your show, for other platform.
+            </small>
+          </div>
+        </div>
+        <div class="flex justify-end">
+          <button mat-stroked-button type="button" [disabled]="isLoading" (click)="submitForm()">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
