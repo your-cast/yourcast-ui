@@ -9,8 +9,10 @@ import {SharedModule} from '../common/common.module';
 import {WelcomeComponent} from './welcome/welcome.component';
 import {ShowCreateComponent} from './show/create/show-create.component';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
-import {ShowDetailComponent} from './show/detail/show-detail.component';
+import {ShowComponent} from './show/detail/show.component';
 import {MaterialModule} from '../material/material.module';
+import {ShowEpisodesComponent} from './show/detail/episodes/show-episodes.component';
+import {ShowDetailComponent} from './show/detail/detail/detail.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import {MaterialModule} from '../material/material.module';
     DashboardComponent,
     WelcomeComponent,
     ShowCreateComponent,
+    ShowComponent,
+    ShowEpisodesComponent,
     ShowDetailComponent
   ],
   imports: [
