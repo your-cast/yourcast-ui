@@ -2,43 +2,33 @@ name: Angular build & test
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
 
 jobs:
-  build:
-    name: All Steps (Build, Test & Deploy)
+  angular:
+    name: Angular Build
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        node-version: [18.x]
-
+        node-version: [20]
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout the source code
+        uses: actions/checkout@v3
 
-      - name: Cache node modules
-        uses: actions/cache@v4
+      - name: Setup Node.js $
+        uses: actions/setup-node@v3
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          node-version: $
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v1.4.2
-        with:
-          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: npm instll
 
-      - name: Install Dependencies
-        run: npm install
-
-#      - name: Run Unit Tests
-#        run: npm run test
+#      - name: Run tests
+#        run: npm run test:ci
 #
-#      - name: Run codacy-coverage-reporter
-#        uses: codacy/codacy-coverage-reporter-action@master
-#        with:
-#          project-token: ${{ secrets.CODACY_CODE_COVERAGE_TOKEN }}
-#          coverage-reports: coverage/lcov.info
+#      - name: Build
+#        run: npm run build
