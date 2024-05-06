@@ -1,0 +1,23 @@
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+    authors:
+      - bot
+  categories:
+    - title: Breaking Changes
+      labels:
+        - Semver-Major
+        - breaking-change
+    - title: New Features
+      labels:
+        - Semver-Minor
+        - enhancement
+        - feature
+    - title: Fixes
+      labels:
+        - hotfix
+        - bugfix
+    - title: Other Changes
+      labels:
+        - "*"s

@@ -1,193 +1,158 @@
-<div class="content">
-  <div class="page-header d-md-flex justify-content-between">
-    <div>
-      <h3>Create a new show</h3>
-      <p class="text-muted">Give your show a title and add some basic information, to get you started.</p>
+<div class="flex flex-col flex-auto min-w-0">
+  <!-- Header -->
+  <div class="bg-card">
+    <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8">
+      <div class="flex flex-col sm:flex-row flex-auto sm:items-center min-w-0 my-8 sm:my-12">
+        <div class="flex flex-auto items-center min-w-0">
+          <div class="flex flex-col min-w-0 ml-4">
+            <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
+              Create a new show
+            </div>
+            <div class="flex items-center">
+              <p class="ml-1.5 leading-6 truncate text-secondary">
+                Give your show a title and add some basic information, to get you started
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+  <!-- Content -->
+  <div class="flex-auto border-t -mt-px pt-4 sm:pt-6">
+    <div class="w-full max-w-screen-xl mx-auto">
+      <div class="grid grid-cols-1 gap-6 w-full min-w-0 p-6">
+        <form [formGroup]="form">
+          <div class="flex justify-between pt-2">
+            <div class="w-1/2">
+              <img mat-card-image class="rounded-pill w-50 display-center" [src]="image" alt="artwork" *ngIf="image">
+              <img mat-card-image class="rounded-pill w-50 display-center" src="/assets/image/placeholder-image.png"
+                   alt="artwork" *ngIf="!image">
+              <p class="text-base pb-2">Cover art requirements</p>
+              <p class="text-sm">To be accepted by platforms like Apple Podcasts, covers should be:</p>
+              <ul class="pb-2 pt-1">
+                <li class="ps-5 text-sm text-gray-500">* at least 1400x1400 pixels</li>
+                <li class="ps-5 text-sm text-gray-500">* max 512 KB in file size</li>
+                <li class="ps-5 text-sm text-gray-500">* PNG or JPEG format</li>
+              </ul>
+              <input type="file" accept=".png, .jpg, .jpeg" hidden #uploader (change)="uploadFile($event)">
+              <button mat-stroked-button (click)="uploader.click()" *ngIf="!image">ADD ARTWORK</button>
+              <button mat-stroked-button color="warn" (click)="uploader.click()" *ngIf="image">CHANGE ARTWORK</button>
+            </div>
+            <div class="w-1/2">
+              <mat-form-field class="w-full">
+                <mat-label>Title</mat-label>
+                <input matInput id="title" formControlName="title" placeholder="Your title">
+              </mat-form-field>
 
-  <form [formGroup]="form">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">Show cover</div>
-          <div class="card-body">
-            <figure>
-              <img class="rounded-pill w-450 display-center" [src]="image" alt="artwork" *ngIf="image">
-              <img class="rounded-pill w-450 display-center" src="/assets/image/placeholder-image.png" alt="artwork" *ngIf="!image">
-            </figure>
-            <input type="file" accept=".png, .jpg, .jpeg" hidden #uploader (change)="uploadFile($event)">
-            <button type="button" class="btn btn-primary" (click)="uploader.click()">Change Artwork</button>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">
-            Main information
-          </div>
-          <div class="card-body">
-            <div class="form-group">
-              <label for="title">Title</label>
-              <input id="title" formControlName="title" class="form-control" placeholder="Your title" required>
-              <span class="text-danger" *ngIf="form.controls['title'].touched && form.controls['title'].errors">
-                Title is required
-              </span>
-            </div>
-            <div class="form-group">
-              <label for="summary">Summary</label>
+              <h4>Summary</h4>
               <ckeditor id="summary" [editor]="editor" (change)="handleChangeSummary($event)"></ckeditor>
-            </div>
-            <hr>
-            <div class="form-group">
-              <label for="language">Language</label>
-              <select id="language" class="form-control" formControlName="language">
-                <option *ngFor="let language of languages" [value]="language.code">{{ language.value }}</option>
-              </select>
-            </div>
-            <hr>
-            <div class="form-group">
-              <label for="type">Show format</label>
-              <div class="form-item-control">
-                <div class="form-item-control-input">
-                  <div class="btn-group" id="type" role="group">
-                    <button type="button"
-                            class="{{ form.value.format === 'episodic' ? 'btn btn-info' : 'btn btn-light' }}"
-                            (click)="handleChangeType()">Episodic
-                    </button>
-                    <button type="button"
-                            class="{{ form.value.format === 'serial' ? 'btn btn-info' : 'btn btn-light' }}"
-                            (click)="handleChangeType()">Serial
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="explicit">Explicit</label>
-              <div class="form-item-control">
-                <div class="form-item-control-input">
-                  <div class="btn-group" id="explicit" role="group">
-                    <button type="button" class="{{ form.value.explicit ? 'btn btn-light' : 'btn btn-info' }}"
-                            (click)="handleChangeExplicit()">No
-                    </button>
-                    <button type="button" class="{{ form.value.explicit ? 'btn btn-info' : 'btn btn-light' }}"
-                            (click)="handleChangeExplicit()">Yes
-                    </button>
-                  </div>
-                </div>
-              </div>
+
+              <mat-divider class="p-2"></mat-divider>
+
+              <mat-form-field class="w-full">
+                <mat-label>Language</mat-label>
+                <mat-select id="language" formControlName="language">
+                  <mat-option *ngFor="let language of languages" [value]="language.code">{{ language.value }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-divider class="p-2"></mat-divider>
+
+              <h4 class="p-1">Show format</h4>
+              <mat-button-toggle-group formControlName="format" aria-label="Show format">
+                <mat-button-toggle value="episodic">Episodic</mat-button-toggle>
+                <mat-button-toggle value="serial">Serial</mat-button-toggle>
+              </mat-button-toggle-group>
+
+              <h4 class="p-1">Explicit</h4>
+              <mat-button-toggle-group formControlName="explicit" aria-label="Explicit">
+                <mat-button-toggle [value]="true">Yes</mat-button-toggle>
+                <mat-button-toggle [value]="false">No</mat-button-toggle>
+              </mat-button-toggle-group>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        Details
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="description">Category</label>
-              <select class="form-control" formControlName="category">
-                <optgroup *ngFor="let category of categories" label="{{ category.value }}">
-                  <option *ngFor="let children of category.children" value="{{ children.code }}">{{ children.value }}
-                  </option>
-                </optgroup>
-              </select>
-              <span class="text-danger" *ngIf="form.controls['category'].errors">
-                Category is required
-              </span>
-            </div>
-            <div class="form-group">
-              <label for="link">Link</label>
-              <input type="text" class="form-control" formControlName="link" id="link"
-                     placeholder="https://your-cast.com/show/name">
-              <small id="linkHelp" class="form-text text-muted">
+          <div class="flex justify-between pt-2">
+            <div class="w-1/2 pe-2">
+              <mat-form-field class="w-full">
+                <mat-label>Category</mat-label>
+                <mat-select id="category" formControlName="category">
+                  <mat-optgroup *ngFor="let category of categories" label="{{ category.value }}">
+                    <mat-option *ngFor="let children of category.children"
+                                value="{{ children.code }}">{{ children.value }}
+                    </mat-option>
+                  </mat-optgroup>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="w-full">
+                <mat-label>Link</mat-label>
+                <input matInput id="link" formControlName="link" placeholder="https://your-cast.com/show/name">
+              </mat-form-field>
+              <small class="text-sm text-gray-500">
                 This is the website associated with your podcast.
-                It can also be changed to any URL you like, including your website, blog, Facebook page, or any other
-                URL.
+                It can also be changed to any URL you like, including your website, blog, Facebook page, or any other URL.
               </small>
             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="keywords">Keywords</label>
-              <input type="text" class="form-control" formControlName="keywords" id="keywords"
-                     placeholder="e.g., sport, football">
-              <small id="keywordsHelp" class="form-text text-muted">
+            <div class="w-1/2 ps-2">
+              <mat-form-field class="w-full">
+                <mat-label>Keywords</mat-label>
+                <textarea matInput formControlName="keywords" placeholder="e.g., sport, football"></textarea>
+              </mat-form-field>
+              <small class="text-sm text-gray-500">
                 Comma separated list of keywords.
                 Can include the theme, topic keywords, location, guest names, etc...
               </small>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        Author Details
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="author">Author</label>
-              <input type="text" class="form-control" formControlName="author" id="author" placeholder="Enter author">
+          <div class="flex justify-between pt-2">
+            <div class="w-1/2 pe-2">
+              <mat-form-field class="w-full">
+                <mat-label>Author</mat-label>
+                <input matInput id="author" formControlName="author" placeholder="https://your-cast.com/show/name">
+              </mat-form-field>
               <span class="text-danger" *ngIf="form.controls['author'].touched && form.controls['author'].errors">
-                Author is required
-              </span>
-              <small id="authorHelp" class="form-text text-muted">
+              Author is required
+            </span>
+              <small class="text-sm text-gray-500">
                 The content of this tag is shown in the Artist column in iTunes.
               </small>
-            </div>
-            <div class="form-group">
-              <label for="owner">Owner Name</label>
-              <input type="text" class="form-control" formControlName="owner" id="owner" placeholder="Enter owner">
+              <mat-form-field class="w-full">
+                <mat-label>Owner Name</mat-label>
+                <input matInput id="owner" formControlName="owner" placeholder="Enter owner">
+              </mat-form-field>
               <span class="text-danger" *ngIf="form.controls['owner'].touched && form.controls['owner'].errors">
-                Owner Name is required
-              </span>
-              <small id="ownerHelp" class="form-text text-muted">
-                That will be used to contact the owner of the podcast for communication specifically about the
-                podcast.
+              Owner Name is required
+            </span>
+              <small class="text-sm text-gray-500">
+                That will be used to contact the owner of the podcast for communication specifically about the podcast.
                 It will not be publicly displayed.
               </small>
             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="copyright">Copyright</label>
-              <input type="text" class="form-control" formControlName="copyright" id="copyright"
-                     placeholder="Enter copyright">
-              <small id="copyrightHelp" class="form-text text-muted">
+            <div class="w-1/2 ps-2">
+              <mat-form-field class="w-full">
+                <mat-label>Copyright</mat-label>
+                <input matInput id="copyright" formControlName="copyright" placeholder="Enter copyright">
+              </mat-form-field>
+              <span class="text-danger" *ngIf="form.controls['copyright'].touched && form.controls['copyright'].errors">
+              Author is required
+            </span>
+              <small class="text-sm text-gray-500">
                 Copyright is required to submit on apps such as Apple Podcast.
               </small>
-            </div>
-            <div class="form-group">
-              <label for="email">Owner Email</label>
-              <input type="email" class="form-control" formControlName="ownerEmail" id="email"
-                     placeholder="Enter email">
+              <mat-form-field class="w-full">
+                <mat-label>Copyright</mat-label>
+                <input matInput id="email" formControlName="ownerEmail" placeholder="Enter email">
+              </mat-form-field>
               <span class="text-danger" *ngIf="form.controls['ownerEmail'].touched && form.controls['ownerEmail'].errors">
-                Owner Email is required
-              </span>
+              Owner Email is required
+            </span>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-body">
-        <div class="row text-center justify-content-end">
-          <div class="mt-2 mr-5 mb-2">
-            <button class="btn btn-primary" type="button" [disabled]="isLoading" (click)="submitForm()">
-              <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
-              {{ isLoading ? 'Loading...' : 'Create' }}
-            </button>
+          <div class="flex justify-end">
+            <button mat-stroked-button type="button" [disabled]="isLoading" (click)="submitForm()">Create</button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
-  </form>
+  </div>
 </div>

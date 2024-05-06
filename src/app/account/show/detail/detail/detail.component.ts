@@ -127,7 +127,8 @@ export class ShowDetailComponent implements OnInit {
       author: this.form.controls['author'].value,
       podcast_owner: this.form.controls['owner'].value,
       email_owner: this.form.controls['ownerEmail'].value,
-      copyright: this.form.controls['copyright'].value
+      copyright: this.form.controls['copyright'].value,
+      status: this.form.controls['status'].value
     };
     this.showService.updateShow(formData, this.show.id).subscribe(response => {
       this.router.navigate(['/shows/list']);

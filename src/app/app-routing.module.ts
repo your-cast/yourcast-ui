@@ -1,16 +1,15 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 import {mapToCanActivate, RouterModule, Routes} from '@angular/router';
-import {RegistrationComponent} from "./auth/registration/registration.component";
-import {LoginComponent} from "./auth/login/login.component";
-import {AppComponent} from "./app.component";
-import {AuthGuard} from "./guard/auth.guard";
-import {ResetComponent} from "./auth/reset/reset.component";
-import {DashboardComponent} from "./account/dashboard/dashboard.component";
-import {LayoutComponent} from "./account/layout/layout.component";
+import {RegistrationComponent} from './auth/registration/registration.component';
+import {LoginComponent} from './auth/login/login.component';
+import {AppComponent} from './app.component';
+import {AuthGuard} from './guard/auth.guard';
+import {ResetComponent} from './auth/reset/reset.component';
+import {DashboardComponent} from './account/dashboard/dashboard.component';
+import {LayoutComponent} from './account/layout/layout.component';
 import {ShowComponent} from './account/show/detail/show.component';
-// import {WelcomeComponent} from "./account/welcome/welcome.component";
-// import {ShowCreateComponent} from "./account/show/create/show-create.component";
-// import {ShowDetailComponent} from "./account/show/detail/show-detail.component";
+import {WelcomeComponent} from './account/welcome/welcome.component';
+import {ShowCreateComponent} from './account/show/create/show-create.component';
 
 const routes: Routes = [
   {
@@ -22,18 +21,18 @@ const routes: Routes = [
         path: 'dashboard',
         component: DashboardComponent
       },
-      // {
-      //   path: 'welcome',
-      //   component: WelcomeComponent
-      // },
-      // {
-      //   path: 'show/create',
-      //   component: ShowCreateComponent
-      // },
+      {
+        path: 'welcome',
+        component: WelcomeComponent
+      },
+      {
+        path: 'show/create',
+        component: ShowCreateComponent
+      },
       {
         path: 'show/detail/:id',
         component: ShowComponent
-      },
+      }
     ]
   },
   {
@@ -65,4 +64,6 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+
+export class AppRoutingModule {
+}

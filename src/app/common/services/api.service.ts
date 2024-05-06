@@ -5,6 +5,9 @@ import {Observable, throwError} from 'rxjs';
 import {catchError, finalize} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {AlertService} from './alert.service';
+import {apiRequestFinished, apiRequestSent} from '../../store/app/actions/app.actions';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../store/store';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +19,8 @@ export class ApiService {
   constructor(
     private http: HttpClient,
     private alertService: AlertService,
-    public router: Router
+    public router: Router,
+    private store: Store<AppState>
   ) {
     const headers = new HttpHeaders()
       .set('Accept', 'application/json')
@@ -52,11 +56,11 @@ export class ApiService {
   }
 
   doRequest(request: Observable<any>): Observable<any> {
-    // this.store.dispatch(apiRequestSent());
+    this.store.dispatch(apiRequestSent());
     return request.pipe(
       catchError(err => throwError(this.handleError(err))),
       finalize(() => {
-        // this.store.dispatch(apiRequestFinished());
+        this.store.dispatch(apiRequestFinished());
       })
     );
   }
