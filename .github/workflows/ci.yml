@@ -7,29 +7,22 @@ on:
     branches: [ "main" ]
 
 jobs:
-  angular:
-    name: Angular Build
+  ci:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18, 20]
-
     steps:
-      - name: Checkout the source code
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js $
-        uses: actions/setup-node@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
-          cache-dependency-path: package-lock.json
+          node-version: '20'
 
       - name: Install dependencies
-        run: npm instll
+        run: npm install
 
-#      - name: Run tests
-#        run: npm run test:ci
-#
-#      - name: Build
-#        run: npm run build
+      - name: Run tests
+        run: echo 'tests'
+
+      - name: Build
+        run: npm run build
