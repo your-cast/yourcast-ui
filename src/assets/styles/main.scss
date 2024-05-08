@@ -7,3 +7,19 @@
 @use 'overrides/highlightjs';
 @use 'overrides/perfect-scrollbar';
 @use 'overrides/quill';
+
+.ck-editor__editable {
+  background-color: #1e293b !important;
+}
+
+.ck-toolbar {
+  background: #293445 !important;
+}
+
+.ck-reset_all :not(.ck-reset_all-excluded *), .ck.ck-reset_all {
+  color: #ffffff !important;
+}
+
+.ck-editor__editable_inline {
+  min-height: 150px !important;
+}
