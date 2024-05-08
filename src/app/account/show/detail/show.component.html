@@ -21,7 +21,7 @@
 
         <!-- Actions -->
         <div class="flex items-center mt-6 sm:mt-0 sm:ml-2 space-x-3">
-          <button mat-flat-button [color]="'primary'">
+          <button mat-flat-button [color]="'primary'" (click)="handleMoveToEpisodeCreate(show.id)">
             <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:plus-circle'"></mat-icon>
             <span class="ml-2">Add episode</span>
           </button>

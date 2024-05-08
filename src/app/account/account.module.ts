@@ -13,6 +13,7 @@ import {ShowComponent} from './show/detail/show.component';
 import {MaterialModule} from '../material/material.module';
 import {ShowEpisodesComponent} from './show/detail/episodes/show-episodes.component';
 import {ShowDetailComponent} from './show/detail/detail/detail.component';
+import {EpisodeCreateComponent} from './episode/create/episode-create.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {ShowDetailComponent} from './show/detail/detail/detail.component';
     ShowCreateComponent,
     ShowComponent,
     ShowEpisodesComponent,
-    ShowDetailComponent
+    ShowDetailComponent,
+    EpisodeCreateComponent
   ],
   imports: [
     CommonModule,
