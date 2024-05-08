@@ -10,6 +10,7 @@ import {LayoutComponent} from './account/layout/layout.component';
 import {ShowComponent} from './account/show/detail/show.component';
 import {WelcomeComponent} from './account/welcome/welcome.component';
 import {ShowCreateComponent} from './account/show/create/show-create.component';
+import {EpisodeCreateComponent} from './account/episode/create/episode-create.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
       {
         path: 'show/detail/:id',
         component: ShowComponent
+      },
+      {
+        path: 'episode/create/:id',
+        component: EpisodeCreateComponent
       }
     ]
   },

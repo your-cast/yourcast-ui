@@ -1,0 +1,103 @@
+<div class="flex flex-col flex-auto min-w-0">
+
+  <!-- Header -->
+  <div class="bg-card" *ngIf="show">
+    <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8">
+      <div class="flex flex-col sm:flex-row flex-auto sm:items-center min-w-0 my-8 sm:my-12">
+        <div class="flex flex-auto items-center min-w-0">
+          <div class="flex-0 w-16 h-16 rounded-full overflow-hidden">
+            <img [src]="show.artwork" alt="artwork" *ngIf="show.artwork">
+            <img src="/assets/image/placeholder-image.png" alt="artwork" *ngIf="!show.artwork">
+          </div>
+          <div class="flex flex-col min-w-0 ml-4">
+            <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
+              {{ show.title }}
+            </div>
+            <div class="flex items-center">
+              <div class="ml-1.5 leading-6 truncate text-secondary" [innerHTML]="show.description"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="flex-auto border-t -mt-px pt-4 sm:pt-6">
+    <div class="w-full max-w-screen-xl mx-auto">
+      <div class="grid grid-cols-1 gap-6 w-full min-w-0 p-6">
+        <form [formGroup]="form">
+          <div class="flex justify-between pt-2">
+            <div class="w-1/2">
+              <img mat-card-image class="rounded-pill w-100 display-center" [src]="image" alt="artwork" *ngIf="image">
+              <img mat-card-image class="rounded-pill w-100 display-center" src="/assets/image/placeholder-image.png"
+                   alt="artwork" *ngIf="!image">
+              <p class="text-base pb-2">Cover art requirements</p>
+              <p class="text-sm">To be accepted by platforms like Apple Podcasts, covers should be:</p>
+              <ul class="pb-2 pt-1">
+                <li class="ps-5 text-sm text-gray-500">* at least 1400x1400 pixels</li>
+                <li class="ps-5 text-sm text-gray-500">* max 512 KB in file size</li>
+                <li class="ps-5 text-sm text-gray-500">* PNG or JPEG format</li>
+              </ul>
+              <input type="file" accept=".png, .jpg, .jpeg" hidden #uploader (change)="uploadImage($event)">
+              <button mat-stroked-button (click)="uploader.click()" *ngIf="!image">ADD ARTWORK</button>
+              <button mat-stroked-button color="warn" (click)="uploader.click()" *ngIf="image">CHANGE ARTWORK</button>
+            </div>
+            <div class="w-1/2">
+              <mat-form-field class="w-full">
+                <mat-label>Title</mat-label>
+                <input matInput id="title" formControlName="title" placeholder="Your title">
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>Link</mat-label>
+                <input matInput id="link" formControlName="link" placeholder="https://your-cast.com/show/name">
+              </mat-form-field>
+
+              <mat-divider class="p-2"></mat-divider>
+
+              <div class="flex justify-between pt-2">
+                <div class="w-1/2 pe-2">
+                  <mat-form-field class="w-full">
+                    <mat-label>Season</mat-label>
+                    <input matInput id="season" formControlName="season" placeholder="1">
+                  </mat-form-field>
+                </div>
+                <div class="w-1/2 ps-2">
+                  <mat-form-field class="w-full">
+                    <mat-label>Episode</mat-label>
+                    <input matInput id="episode" formControlName="episode" placeholder="1">
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <mat-divider class="p-2"></mat-divider>
+
+              <h4 class="p-1">Show format</h4>
+              <mat-button-toggle-group formControlName="type" aria-label="Episode type">
+                <mat-button-toggle value="full">Full (complete content)</mat-button-toggle>
+                <mat-button-toggle value="trailer">Trailer (short, promotional)</mat-button-toggle>
+                <mat-button-toggle value="bonus">Bonus (extra content)</mat-button-toggle>
+              </mat-button-toggle-group>
+
+              <h4 class="p-1">Explicit</h4>
+              <mat-button-toggle-group formControlName="explicit" aria-label="Explicit">
+                <mat-button-toggle [value]="true">Yes</mat-button-toggle>
+                <mat-button-toggle [value]="false">No</mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+          </div>
+          <div class="flex justify-between pt-3 pb-3">
+          <div class="w-full">
+            <h4>Summary</h4>
+            <ckeditor id="summary" [editor]="editor" (change)="handleChangeSummary($event)"></ckeditor>
+          </div>
+          </div>
+          <div class="flex justify-end">
+            <button mat-stroked-button type="button" [disabled]="isLoading" (click)="submitForm()">Create</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ShowService} from '../../../common/services/show.service';
 
 @Component({
@@ -13,7 +13,8 @@ export class ShowComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private showService: ShowService
+    private showService: ShowService,
+    private router: Router
   ) {
   }
 
@@ -22,5 +23,9 @@ export class ShowComponent implements OnInit {
     this.showService.getShowInfo(this.showId).subscribe(response => {
       this.show = response.result;
     });
+  }
+
+  handleMoveToEpisodeCreate(id: string): void {
+    this.router.navigate(['/episode/create/' + id]);
   }
 }
