@@ -3,10 +3,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ShowService} from '../../../common/services/show.service';
 import {ImageService} from '../../../common/services/image.service';
 import {AlertService} from '../../../common/services/alert.service';
-import {DictionaryService} from '../../../common/services/dictionary.service';
-import {forkJoin, Observable} from 'rxjs';
-import {Timezone} from '../../../common/models/timezone';
-import {Language} from '../../../common/models/language';
 import editor from '@ckeditor/ckeditor5-build-classic';
 import {FormControl, FormGroup} from '@angular/forms';
 import {AudioFileService} from '../../../common/services/audiofile.service';
@@ -29,15 +25,6 @@ export class EpisodeCreateComponent implements OnInit {
   isLoading: boolean = false;
 
   image: string = '';
-  timezones: Timezone[] = [];
-  languages: Language[] = [];
-  categories: any = [];
-
-  timezones$: Observable<any> | undefined;
-  languages$: Observable<any> | undefined;
-  categories$: Observable<any> | undefined;
-
-  allRequestFinished$: Observable<any> | undefined;
 
   form: FormGroup = new FormGroup({
     'title': new FormControl(''),
@@ -60,13 +47,11 @@ export class EpisodeCreateComponent implements OnInit {
     private imageService: ImageService,
     private audioFileService: AudioFileService,
     private alertService: AlertService,
-    private dictionaryService: DictionaryService,
     private episodesService: EpisodesService
   ) {
   }
 
   ngOnInit() {
-    this.prepareDictionary();
     this.subscribeEditForm();
     this.showId = this.activatedRoute.snapshot.paramMap.get('id');
     this.showService.getShowInfo(this.showId).subscribe(response => {
@@ -121,42 +106,29 @@ export class EpisodeCreateComponent implements OnInit {
     return this.replaceSymbols(translate.join('')).toLowerCase();
   }
 
-  prepareDictionary(): void {
-    this.timezones$ = this.dictionaryService.getTimezonesDictionary();
-    this.languages$ = this.dictionaryService.getLanguagesDictionary();
-    this.categories$ = this.dictionaryService.getCategoriesDictionary();
-
-    this.allRequestFinished$ = forkJoin([this.timezones$, this.languages$, this.categories$]);
-
-    this.allRequestFinished$.subscribe(value => {
-      this.timezones = value[0].result;
-      this.languages = value[1].result;
-      this.categories = value[2].result;
-    }, error => {
-      // this.alertService.error('Something want wrong!');
-    });
-  }
-
   uploadFile($event: Event): void {
     const element = $event.currentTarget as HTMLInputElement;
     let fileList: FileList | null = element.files;
     if (fileList) {
       let formData: FormData = new FormData();
       formData.append('audio', fileList[0], fileList[0].name);
-
       this.audioFileService.uploadAudioFile(formData).subscribe(response => {
         this.audioFileList.push({
           title: 'Audio file',
           link: response.path,
           artist: 'You'
         });
-
         this.audioFile = {
           path: response.path,
           id: response.file_id
         };
       });
     }
+  }
+
+  deleteAudioFile(): void {
+    this.audioFileList = [];
+    this.audioFile = null;
   }
 
   uploadImage($event: Event): void {
@@ -174,12 +146,12 @@ export class EpisodeCreateComponent implements OnInit {
   }
 
   submitForm(): void {
-    if (this.form.valid) {
+    if (!this.form.valid) {
       return;
     }
 
     const formData = {
-      show_id: this.form,
+      show_id: this.show.id,
       audio_id: this.audioFile.id,
       cover: this.image,
       title: this.form.controls['title'].value,

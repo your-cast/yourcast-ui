@@ -14,6 +14,7 @@ import {MaterialModule} from '../material/material.module';
 import {ShowEpisodesComponent} from './show/detail/episodes/show-episodes.component';
 import {ShowDetailComponent} from './show/detail/detail/detail.component';
 import {EpisodeCreateComponent} from './episode/create/episode-create.component';
+import {NgxAudioPlayerModule} from '@khajegan/ngx-audio-player';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import {EpisodeCreateComponent} from './episode/create/episode-create.component'
     MaterialModule,
     RouterModule,
     SharedModule,
-    CKEditorModule
+    CKEditorModule,
+    NgxAudioPlayerModule
   ]
 })
 
