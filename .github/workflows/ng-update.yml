@@ -1,6 +1,10 @@
 name: "Update Angular Action"
 
 on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
   schedule:
     - cron: '30 9 * * 1,3,5'
 
@@ -9,6 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Updating ng dependencies
-        uses: fast-facts/ng-update@master
+        uses: tinesoft/ngx-uptodate@master
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
