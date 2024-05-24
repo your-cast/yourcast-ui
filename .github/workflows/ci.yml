@@ -2,12 +2,13 @@ name: Angular build & test
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
-  ci:
+  build:
+    name: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,4 +26,42 @@ jobs:
         run: echo 'tests'
 
       - name: Build
-        run: npm run build
+        run: npm run build --prod --output-hashing=none yourcast
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact
+          path: ${{ github.workspace }}/artifact
+          retention-days: 1
+
+  deploy:
+    name: deploy
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: artifact
+          path: ${{ github.workspace }}/artifact
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      - name: docker login
+        env:
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag kuchura/your-cast-frontend:1.0.1-$(echo $GITHUB_SHA | cut -c1-7)
+
+      - name: Docker Push
+        run: docker push kuchura/your-cast-frontend:1.0.1-$(echo $GITHUB_SHA | cut -c1-7)
