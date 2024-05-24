@@ -1,4 +1,4 @@
-name: Angular build & test
+name: Angular CI/CD
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
     name: build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -35,12 +35,24 @@ jobs:
           path: ./public
           retention-days: 1
 
+  dependency-scan:
+    name: dependency-scan
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Dependency Scan
+        uses: actions/dependency-review-action@v4
+
   deploy:
     name: deploy
     needs: [ build ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - uses: actions/download-artifact@v4
         with:
