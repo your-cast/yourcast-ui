@@ -1,4 +1,4 @@
-name: Angular build & test
+name: Angular CI/CD
 
 on:
   push:
@@ -7,11 +7,11 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-    name: build
+  tests:
+    name: tests
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -25,6 +25,22 @@ jobs:
       - name: Run tests
         run: echo 'tests'
 
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    needs: [ tests ]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
       - name: Build
         run: npm run build --prod --output-hashing=none yourcast
 
@@ -37,10 +53,11 @@ jobs:
 
   deploy:
     name: deploy
-    needs: [ build ]
+    needs: [ tests, build ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - uses: actions/download-artifact@v4
         with:
