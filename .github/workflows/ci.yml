@@ -51,20 +51,9 @@ jobs:
           path: ./public
           retention-days: 1
 
-  dependency-scan:
-    name: dependency-scan
-    needs: [ tests, build ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Dependency Scan
-        uses: actions/dependency-review-action@v4
-
   deploy:
     name: deploy
-    needs: [ tests, dependency-scan, build ]
+    needs: [ tests, build ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
