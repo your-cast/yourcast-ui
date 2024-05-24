@@ -20,6 +20,6 @@ RUN touch /var/run/nginx.pid && \
 
 USER $UID
 
-EXPOSE 8080
+EXPOSE 80
 
 CMD ["/bin/sh",  "-c",  "exec nginx -g 'daemon off;'"]
