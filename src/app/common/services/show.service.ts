@@ -18,8 +18,8 @@ export class ShowService extends ApiService {
     return this.get('v1/show/list');
   }
 
-  showShortList(): Observable<any> {
-    return this.get('v1/show/short');
+  showShortInfo(id: any): Observable<any> {
+    return this.get('v1/show/' + id + '/short');
   }
 
   getShowInfo(id: any): Observable<any> {

@@ -10,7 +10,8 @@
         <ng-container *ngIf="!isScreenSmall">
           <div class="flex items-center">
             <img
-              class="w-40"
+              (click)="handleMoveToDashboard()"
+              class="w-40 cursor-pointer"
               src="assets/image/your-cast-logo-white.png"
               alt="Logo image">
           </div>

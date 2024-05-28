@@ -10,9 +10,13 @@
         <ng-container matColumnDef="artwork">
           <th mat-header-cell *matHeaderCellDef> Artwork</th>
           <td mat-cell *matCellDef="let element">
-            <img class="rounded-pill w-20 p-1" [src]="element.artwork" alt="artwork"
+            <img class="rounded-pill w-20 p-1 cursor-pointer" [src]="element.artwork"
+                 (click)="handleMoveToEpisodeDetail(element.id)"
+                 alt="artwork"
                  *ngIf="element.artwork">
-            <img class="rounded-pill w-20 p-1" src="/assets/image/placeholder-image.png" alt="artwork"
+            <img class="rounded-pill w-20 p-1 cursor-pointer" [src]="'/assets/image/placeholder-image.png'"
+                 (click)="handleMoveToEpisodeDetail(element.id)"
+                 alt="artwork"
                  *ngIf="!element.artwork">
           </td>
         </ng-container>
@@ -57,7 +61,7 @@
                   <mat-icon [svgIcon]="'heroicons_outline:rss'"></mat-icon>
                   <span>Publish</span>
                 </button>
-                <button mat-menu-item>
+                <button mat-menu-item (click)="handleMoveToEpisodeDetail(element.id)">
                   <mat-icon [svgIcon]="'heroicons_outline:pencil-square'"></mat-icon>
                   <span>Edit</span>
                 </button>
