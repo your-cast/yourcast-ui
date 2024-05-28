@@ -29,6 +29,10 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  handleMoveToCreateEpisode(id: string): void {
+    this.router.navigate(['/episode/create/' + id]);
+  }
+
   handleMoveToShowDetail(id: string): void {
     this.router.navigate(['/show/detail/' + id]);
   }

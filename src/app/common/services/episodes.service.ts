@@ -10,8 +10,8 @@ export class EpisodesService extends ApiService {
     return this.post('v1/episodes/create', formData);
   }
 
-  listEpisodes(): Observable<any> {
-    return this.get('v1/episodes/list');
+  updateEpisode(formData: any, id: any): Observable<any> {
+    return this.patch('v1/episodes/' + id, formData);
   }
 
   showEpisodesList(showId: any, page: number): Observable<any> {

@@ -47,6 +47,10 @@ export class LayoutComponent implements OnInit {
     this.authService.logout();
   }
 
+  handleMoveToDashboard(): void {
+    this.router.navigate(['/dashboard']);
+  }
+
   handleMoveToDetail(id: string): void  {
     this.router.navigate(['/users/detail/' + id]);
   }
