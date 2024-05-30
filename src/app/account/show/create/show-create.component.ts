@@ -2,12 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {forkJoin, Observable} from 'rxjs';
-import {Timezone} from '../../../common/models/timezone';
-import {Language} from '../../../common/models/language';
-import {AlertService} from '../../../common/services/alert.service';
-import {ImageService} from '../../../common/services/image.service';
-import {DictionaryService} from '../../../common/services/dictionary.service';
-import {ShowService} from '../../../common/services/show.service';
+import {Timezone} from '../../../shared/models/timezone';
+import {Language} from '../../../shared/models/language';
+import {AlertService} from '../../../shared/services/alert.service';
+import {ImageService} from '../../../shared/services/image.service';
+import {DictionaryService} from '../../../shared/services/dictionary.service';
+import {ShowService} from '../../../shared/services/show.service';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {ChangeEvent} from '@ckeditor/ckeditor5-angular';
 
@@ -73,7 +73,7 @@ export class ShowCreateComponent implements OnInit {
       this.languages = value[1].result;
       this.categories = value[2].result;
     }, error => {
-      // this.alertService.error('Something want wrong!');
+      // this.alertService.success('Something want wrong!');
     });
   }
 

@@ -5,7 +5,7 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {LayoutComponent} from './layout/layout.component';
 import {AppRoutingModule} from '../app-routing.module';
 import {RouterModule} from '@angular/router';
-import {SharedModule} from '../common/common.module';
+import {SharedModule} from '../shared/shared.module';
 import {WelcomeComponent} from './welcome/welcome.component';
 import {ShowCreateComponent} from './show/create/show-create.component';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';

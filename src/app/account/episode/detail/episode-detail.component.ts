@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ShowService} from '../../../common/services/show.service';
-import {ImageService} from '../../../common/services/image.service';
-import {AlertService} from '../../../common/services/alert.service';
+import {ShowService} from '../../../shared/services/show.service';
+import {ImageService} from '../../../shared/services/image.service';
+import {AlertService} from '../../../shared/services/alert.service';
 import editor from '@ckeditor/ckeditor5-build-classic';
 import {FormControl, FormGroup} from '@angular/forms';
-import {AudioFileService} from '../../../common/services/audiofile.service';
+import {AudioFileService} from '../../../shared/services/audiofile.service';
 import {Track} from '@khajegan/ngx-audio-player';
 import {ChangeEvent} from '@ckeditor/ckeditor5-angular';
-import {EpisodesService} from '../../../common/services/episodes.service';
+import {EpisodesService} from '../../../shared/services/episodes.service';
 import {switchMap} from 'rxjs';
 
 @Component({
@@ -201,8 +201,7 @@ export class EpisodeDetailComponent implements OnInit {
     };
 
     this.episodesService.updateEpisode(formData, this.episodeId).subscribe(response => {
-      this.router.navigate(['/shows/list']);
-      // this.alertService.success('New episode added to your show!');
+      this.alertService.success('Episode success updated!');
     });
   }
 

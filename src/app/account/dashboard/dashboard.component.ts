@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {ShowService} from '../../common/services/show.service';
+import {ShowService} from '../../shared/services/show.service';
 
 @Component({
   selector: 'app-dashboard',

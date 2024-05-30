@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from '../../common/services/auth.service';
-import {AlertService} from '../../common/services/alert.service';
-import {AlertType} from '../../common/models/alert.types';
+import {AuthService} from '../../shared/services/auth.service';
+import {AlertService} from '../../shared/services/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -12,11 +11,6 @@ import {AlertType} from '../../common/models/alert.types';
 })
 export class LoginComponent implements OnInit {
   showSpinner: boolean;
-
-  alert: { type: AlertType; message: string } = {
-    type: 'success',
-    message: ''
-  };
 
   showAlert: boolean = false;
 
@@ -54,7 +48,7 @@ export class LoginComponent implements OnInit {
           }
         },
         (): void => {
-          this.alertService.show('Invalid credentials. Email not found or wrong password.');
+          this.alertService.error('Invalid credentials. Email not found or wrong password.');
           this.showSpinner = false;
         });
   }

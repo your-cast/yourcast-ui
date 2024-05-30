@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {AuthService} from "../../common/services/auth.service";
-import {AlertService} from "../../common/services/alert.service";
-import {AlertType} from '../../common/models/alert.types';
+import {AuthService} from '../../shared/services/auth.service';
+import {AlertService} from '../../shared/services/alert.service';
 
 @Component({
   selector: 'app-registration',
@@ -12,11 +11,6 @@ import {AlertType} from '../../common/models/alert.types';
 })
 export class RegistrationComponent implements OnInit {
   showSpinner: boolean;
-
-  alert: { type: AlertType; message: string } = {
-    type: 'success',
-    message: ''
-  };
 
   showAlert: boolean = false;
 
@@ -47,7 +41,7 @@ export class RegistrationComponent implements OnInit {
       .subscribe((result: any): void => {
           this.showSpinner = false;
           if (result) {
-            // this.alertService.success('Registration complete. Enter your credential for auth.');
+            this.alertService.success('Registration complete. Enter your credential for auth.');
             this.router.navigate(['/auth/login']);
           }
         },
