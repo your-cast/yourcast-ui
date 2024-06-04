@@ -57,7 +57,7 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <button mat-menu-item *ngIf="element.status === 'drafted'">
+                <button mat-menu-item *ngIf="element.status === 'drafted'" (click)="handlePublishEpisode(element.id)">
                   <mat-icon [svgIcon]="'heroicons_outline:rss'"></mat-icon>
                   <span>Publish</span>
                 </button>

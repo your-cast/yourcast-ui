@@ -1,6 +1,7 @@
 import {ApiService} from './api.service';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
+import {data} from 'autoprefixer';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,10 @@ export class EpisodesService extends ApiService {
 
   updateEpisode(formData: any, id: any): Observable<any> {
     return this.patch('v1/episodes/' + id, formData);
+  }
+
+  updateEpisodeStatus(data: any, id: any): Observable<any> {
+    return this.patch('v1/episodes/status/' + id, data);
   }
 
   showEpisodesList(showId: any, page: number): Observable<any> {
