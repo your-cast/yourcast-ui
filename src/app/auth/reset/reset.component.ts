@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from "../../common/services/auth.service";
-import {AlertService} from "../../common/services/alert.service";
+import {AuthService} from "../../shared/services/auth.service";
+import {AlertService} from "../../shared/services/alert.service";
 
 @Component({
   selector: 'app-registration',

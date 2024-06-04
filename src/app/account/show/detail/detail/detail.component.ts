@@ -4,11 +4,12 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {ChangeEvent} from '@ckeditor/ckeditor5-angular';
 import {Router} from '@angular/router';
-import {ShowService} from '../../../../common/services/show.service';
-import {ImageService} from '../../../../common/services/image.service';
-import {DictionaryService} from '../../../../common/services/dictionary.service';
-import {Language} from '../../../../common/models/language';
-import {Timezone} from '../../../../common/models/timezone';
+import {ShowService} from '../../../../shared/services/show.service';
+import {ImageService} from '../../../../shared/services/image.service';
+import {DictionaryService} from '../../../../shared/services/dictionary.service';
+import {Language} from '../../../../shared/models/language';
+import {Timezone} from '../../../../shared/models/timezone';
+import {AlertService} from '../../../../shared/services/alert.service';
 
 @Component({
   selector: 'app-show-detail',
@@ -53,6 +54,7 @@ export class ShowDetailComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private alertService: AlertService,
     private showService: ShowService,
     private imageService: ImageService,
     private dictionaryService: DictionaryService,
@@ -82,7 +84,7 @@ export class ShowDetailComponent implements OnInit {
       this.prepareForm();
     }, error => {
       this.isLoading = false;
-      // this.alertService.error('Something want wrong!');
+      // this.alertService.success('Something want wrong!');
     });
   }
 
@@ -131,8 +133,8 @@ export class ShowDetailComponent implements OnInit {
       status: this.form.controls['status'].value
     };
     this.showService.updateShow(formData, this.show.id).subscribe(response => {
-      this.router.navigate(['/shows/list']);
-      // this.alertService.success('Show updated.');
+      // this.router.navigate(['/shows/list']);
+      this.alertService.success('Show updated.');
     });
     this.isLoading = false;
   }

@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {PageEvent} from '@angular/material/paginator';
 import {Router} from '@angular/router';
-import {EpisodesService} from '../../../../common/services/episodes.service';
+import {EpisodesService} from '../../../../shared/services/episodes.service';
 
 @Component({
   selector: 'app-show-episodes',

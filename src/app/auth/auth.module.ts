@@ -6,9 +6,9 @@ import {RegistrationComponent} from './registration/registration.component';
 import {RouterLink} from '@angular/router';
 import {ResetComponent} from './reset/reset.component';
 import {MaterialModule} from '../material/material.module';
-import {AlertComponent} from '../common/components/alert/alert.component';
 import {LayoutModule} from '@angular/cdk/layout';
 import {MatIconModule} from '@angular/material/icon';
+import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -18,10 +18,10 @@ import {MatIconModule} from '@angular/material/icon';
   ],
   imports: [
     CommonModule,
+    SharedModule,
     FormsModule,
     ReactiveFormsModule,
     RouterLink,
-    AlertComponent,
     LayoutModule,
     ReactiveFormsModule,
     MaterialModule,

@@ -1,7 +1,7 @@
 import {HttpEvent, HttpHandlerFn, HttpRequest} from '@angular/common/http';
 import {inject} from '@angular/core';
 import {finalize, Observable, take} from 'rxjs';
-import {LoadingService} from '../common/services/loading.service';
+import {LoadingService} from '../shared/services/loading.service';
 
 export const fuseLoadingInterceptor = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
   const fuseLoadingService = inject(LoadingService);

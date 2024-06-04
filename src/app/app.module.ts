@@ -12,7 +12,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {AccountModule} from './account/account.module';
 import {AuthModule} from './auth/auth.module';
-import {SharedModule} from './common/common.module';
+import {SharedModule} from './shared/shared.module';
 import {MaterialModule} from './material/material.module';
 
 @NgModule({
@@ -24,7 +24,7 @@ import {MaterialModule} from './material/material.module';
     AppRoutingModule,
     HttpClientModule,
     AuthModule,
-    // AccountModule,
+    AccountModule,
     SharedModule,
     BrowserAnimationsModule,
     MaterialModule,
