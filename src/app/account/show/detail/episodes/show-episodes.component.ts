@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {PageEvent} from '@angular/material/paginator';
 import {Router} from '@angular/router';
+import {AlertService} from '../../../../shared/services/alert.service';
 import {EpisodesService} from '../../../../shared/services/episodes.service';
 
 @Component({
@@ -18,7 +19,8 @@ export class ShowEpisodesComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private episodesService: EpisodesService
+    private episodesService: EpisodesService,
+    private alertService: AlertService
   ) {
   }
 
@@ -63,5 +65,15 @@ export class ShowEpisodesComponent implements OnInit {
       default:
         return 'DRAFT';
     }
+  }
+
+  handlePublishEpisode(id: string): void {
+    const data: any = {status: 'enabled'};
+    this.episodesService.updateEpisodeStatus(data, id).subscribe(response => {
+      this.episodesService.showEpisodesList(this.show.id, this.page).subscribe(response => {
+        this.episodes = response.result;
+      });
+      this.alertService.success('Episode published successfully!');
+    });
   }
 }
