@@ -16,6 +16,7 @@ import {ShowDetailComponent} from './show/detail/detail/detail.component';
 import {EpisodeCreateComponent} from './episode/create/episode-create.component';
 import {NgxAudioPlayerModule} from '@khajegan/ngx-audio-player';
 import {EpisodeDetailComponent} from './episode/detail/episode-detail.component';
+import {ShowDistributionComponent} from './show/detail/distribution/distribution.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import {EpisodeDetailComponent} from './episode/detail/episode-detail.component'
     ShowComponent,
     ShowEpisodesComponent,
     ShowDetailComponent,
+    ShowDistributionComponent,
     EpisodeCreateComponent,
     EpisodeDetailComponent
   ],

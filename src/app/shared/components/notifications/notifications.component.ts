@@ -3,7 +3,6 @@ import {TemplatePortal} from '@angular/cdk/portal';
 import {
   ChangeDetectorRef,
   Component,
-  OnDestroy,
   OnInit,
   TemplateRef,
   ViewChild,
@@ -18,7 +17,7 @@ import {MatButton} from '@angular/material/button';
   selector: 'notifications',
   templateUrl: './notifications.component.html'
 })
-export class NotificationsComponent implements OnInit, OnDestroy {
+export class NotificationsComponent implements OnInit {
   @ViewChild('notificationsOrigin') private _notificationsOrigin: MatButton | undefined;
   @ViewChild('notificationsPanel') private _notificationsPanel: TemplateRef<any> | undefined;
 
@@ -51,28 +50,13 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {
-    // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
-
-    // Dispose the overlay
-    if (this._overlayRef) {
-      this._overlayRef.dispose();
-    }
-  }
-
   openPanel(): void {
-    // Return if the notifications panel or its origin is not defined
     if (!this._notificationsPanel || !this._notificationsOrigin) {
       return;
     }
-
-    // Create the overlay if it doesn't exist
     if (!this._overlayRef) {
       this._createOverlay();
     }
-
     // @ts-ignore
     this._overlayRef.attach(new TemplatePortal(this._notificationsPanel, this._viewContainerRef));
   }
@@ -83,20 +67,15 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   }
 
   markAllAsRead(): void {
-    // Mark all as read
     this._notificationsService.markAllAsRead().subscribe();
   }
 
   toggleRead(notification: Notification): void {
-    // Toggle the read status
     notification.read = !notification.read;
-
-    // Update the notification
     this._notificationsService.update(notification.id, notification).subscribe();
   }
 
   delete(notification: Notification): void {
-    // Delete the notification
     this._notificationsService.delete(notification.id).subscribe();
   }
 
@@ -150,7 +129,6 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
   private _calculateUnreadCount(): void {
     let count = 0;
-
     if (this.notifications && this.notifications.length) {
       count = this.notifications.filter(notification => !notification.read).length;
     }

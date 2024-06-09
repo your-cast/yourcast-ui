@@ -20,6 +20,10 @@ const routes: Routes = [
     canActivate: mapToCanActivate([AuthGuard]),
     children: [
       {
+        path: '',
+        component: DashboardComponent
+      },
+      {
         path: 'dashboard',
         component: DashboardComponent
       },
