@@ -3,54 +3,8 @@ name: Angular CI/CD
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
-  tests:
-    name: tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run tests
-        run: echo 'tests'
-
-#  analyse:
-#    name: analyse
-#    permissions:
-#      security-events: write
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v4
-#        with:
-#          fetch-depth: 2
-#
-#      - name: Initialize CodeQL
-#        uses: github/codeql-action/init@v3
-#        with:
-#          queries: +security-extended
-#        # Override language selection by uncommenting this and choosing your languages
-#        # with:
-#        #   languages: go, javascript, csharp, python, cpp, java
-#
-#      - name: Autobuild
-#        uses: github/codeql-action/autobuild@v3
-#
-#      - name: Perform CodeQL Analysis
-#        uses: github/codeql-action/analyze@v3
-
   build:
     name: build
     runs-on: ubuntu-latest
