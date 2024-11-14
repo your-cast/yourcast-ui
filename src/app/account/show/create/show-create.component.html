@@ -1,5 +1,4 @@
 <div class="flex flex-col flex-auto min-w-0">
-  <!-- Header -->
   <div class="bg-card">
     <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8">
       <div class="flex flex-col sm:flex-row flex-auto sm:items-center min-w-0 my-8 sm:my-12">
@@ -18,7 +17,6 @@
       </div>
     </div>
   </div>
-  <!-- Content -->
   <div class="flex-auto border-t -mt-px pt-4 sm:pt-6">
     <div class="w-full max-w-screen-xl mx-auto">
       <div class="grid grid-cols-1 gap-6 w-full min-w-0 p-6">
@@ -108,7 +106,7 @@
             <div class="w-1/2 pe-2">
               <mat-form-field class="w-full">
                 <mat-label>Author</mat-label>
-                <input matInput id="author" formControlName="author" placeholder="https://your-cast.com/show/name">
+                <input matInput id="author" formControlName="author" placeholder="John Doe">
               </mat-form-field>
               <span class="text-danger" *ngIf="form.controls['author'].touched && form.controls['author'].errors">
               Author is required
@@ -140,8 +138,8 @@
                 Copyright is required to submit on apps such as Apple Podcast.
               </small>
               <mat-form-field class="w-full">
-                <mat-label>Copyright</mat-label>
-                <input matInput id="email" formControlName="ownerEmail" placeholder="Enter email">
+                <mat-label>Owner Email</mat-label>
+                <input matInput id="email" formControlName="ownerEmail" placeholder="Enter owner email">
               </mat-form-field>
               <span class="text-danger" *ngIf="form.controls['ownerEmail'].touched && form.controls['ownerEmail'].errors">
               Owner Email is required

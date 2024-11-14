@@ -1,11 +1,11 @@
 import {ApiService} from './api.service';
 import {Injectable} from '@angular/core';
-import {environment} from "../../../environments/environment";
+import {environment} from '../../../environments/environment';
 import {map} from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {Store} from "@ngrx/store";
-import {AppState} from "../../store/store";
-import {clearUser, setUser, setUserPermissions} from "../../store/user/actions/user.actions";
+import {Store} from '@ngrx/store';
+import {AppState} from '../../store/store';
+import {clearUser, setUser} from '../../store/user/actions/user.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -26,23 +26,21 @@ export class AuthService {
       map(response => {
         if (response && response['success']) {
           this.store.dispatch(setUser({data: response['user']}));
-          this.store.dispatch(setUserPermissions({data: response['roles']}));
           return response;
         } else {
           return null;
         }
       })
-    )
+    );
   }
 
   login(credentials: any): any {
     return this.apiService.post('v1/login', credentials).pipe(
       map(response => {
-        if (response && response['access_token']) {
-          localStorage.setItem('token', response['access_token']);
+        if (response && response['authToken']) {
+          localStorage.setItem('token', response['authToken']);
           localStorage.setItem('userId', response['user'].id);
           this.store.dispatch(setUser({data: response['user']}));
-          this.store.dispatch(setUserPermissions({data: response['roles']}));
           return true;
         } else {
           return false;

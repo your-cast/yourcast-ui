@@ -8,7 +8,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {environment} from '../environments/environment';
 import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import {AppRoutingModule} from './app-routing.module';
+import {RoutingModule} from './routing.module';
 import {AppComponent} from './app.component';
 import {AccountModule} from './account/account.module';
 import {AuthModule} from './auth/auth.module';
@@ -21,7 +21,7 @@ import {MaterialModule} from './material/material.module';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    RoutingModule,
     HttpClientModule,
     AuthModule,
     AccountModule,
@@ -44,7 +44,7 @@ import {MaterialModule} from './material/material.module';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthTokenInterceptor,
       multi: true
-    },
+    }
   ],
   bootstrap: [
     AppComponent

@@ -1,4 +1,4 @@
-FROM nginx:1.26-alpine
+FROM nginx:1.27-alpine
 
 ARG UID=101
 ARG GID=101

@@ -1,96 +1,73 @@
 import {Overlay, OverlayRef} from '@angular/cdk/overlay';
 import {TemplatePortal} from '@angular/cdk/portal';
 import {
-  ChangeDetectorRef,
   Component,
   OnInit,
   TemplateRef,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import {Subject, takeUntil} from 'rxjs';
-import {NotificationsService} from './notifications.service';
 import {Notification} from '../../models/notifications.types';
 import {MatButton} from '@angular/material/button';
+import {NotificationsService} from '../../services/notifications.service';
 
 @Component({
   selector: 'notifications',
   templateUrl: './notifications.component.html'
 })
 export class NotificationsComponent implements OnInit {
-  @ViewChild('notificationsOrigin') private _notificationsOrigin: MatButton | undefined;
-  @ViewChild('notificationsPanel') private _notificationsPanel: TemplateRef<any> | undefined;
+  @ViewChild('notificationsButton') private notificationsButton: MatButton | undefined;
+  @ViewChild('notificationsPanel') private notificationsPanel: TemplateRef<any> | undefined;
 
   notifications: Notification[] | undefined;
   unreadCount: number = 0;
-  private _overlayRef: OverlayRef | undefined;
-  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  private overlayRef: OverlayRef | undefined;
 
   constructor(
-    private _changeDetectorRef: ChangeDetectorRef,
-    private _notificationsService: NotificationsService,
-    private _overlay: Overlay,
-    private _viewContainerRef: ViewContainerRef
+    private notificationsService: NotificationsService,
+    private overlay: Overlay,
+    private viewContainer: ViewContainerRef
   ) {
   }
 
   ngOnInit(): void {
-    this._notificationsService.notifications$
-      .pipe(takeUntil(this._unsubscribeAll))
-      // @ts-ignore
-      .subscribe((notifications: Notification[]) => {
-        // Load the notifications
-        this.notifications = notifications;
-
-        // Calculate the unread count
+    this.notificationsService.getNotifications()
+      .subscribe(response => {
+        this.notifications = response.result;
         this._calculateUnreadCount();
-
-        // Mark for check
-        this._changeDetectorRef.markForCheck();
       });
   }
 
   openPanel(): void {
-    if (!this._notificationsPanel || !this._notificationsOrigin) {
+    if (!this.notificationsPanel || !this.notificationsButton) {
       return;
     }
-    if (!this._overlayRef) {
+    if (!this.overlayRef) {
       this._createOverlay();
     }
-    // @ts-ignore
-    this._overlayRef.attach(new TemplatePortal(this._notificationsPanel, this._viewContainerRef));
+    this.overlayRef?.attach(new TemplatePortal(this.notificationsPanel, this.viewContainer));
   }
 
   closePanel(): void {
-    // @ts-ignore
-    this._overlayRef.detach();
+    this.overlayRef?.detach();
   }
 
-  markAllAsRead(): void {
-    this._notificationsService.markAllAsRead().subscribe();
+  toggleMarkAllAsRead(): void {
+    this.notificationsService.markAllAsRead().subscribe();
   }
 
   toggleRead(notification: Notification): void {
-    notification.read = !notification.read;
-    this._notificationsService.update(notification.id, notification).subscribe();
-  }
-
-  delete(notification: Notification): void {
-    this._notificationsService.delete(notification.id).subscribe();
-  }
-
-  trackByFn(index: number, item: any): any {
-    return item.id || index;
+    notification.is_read = !notification.is_read;
+    this.notificationsService.update(notification.id, notification).subscribe();
   }
 
   private _createOverlay(): void {
-    this._overlayRef = this._overlay.create({
+    this.overlayRef = this.overlay.create({
       hasBackdrop: true,
       backdropClass: 'fuse-backdrop-on-mobile',
-      scrollStrategy: this._overlay.scrollStrategies.block(),
-      positionStrategy: this._overlay.position()
-        // @ts-ignore
-        .flexibleConnectedTo(this._notificationsOrigin._elementRef.nativeElement)
+      scrollStrategy: this.overlay.scrollStrategies.block(),
+      positionStrategy: this.overlay.position()
+        .flexibleConnectedTo(this.notificationsButton?._elementRef.nativeElement)
         .withLockedPosition(true)
         .withPush(true)
         .withPositions([
@@ -120,17 +97,15 @@ export class NotificationsComponent implements OnInit {
           }
         ])
     });
-
-    this._overlayRef.backdropClick().subscribe(() => {
-      // @ts-ignore
-      this._overlayRef.detach();
+    this.overlayRef.backdropClick().subscribe(() => {
+      this.overlayRef?.detach();
     });
   }
 
   private _calculateUnreadCount(): void {
     let count = 0;
     if (this.notifications && this.notifications.length) {
-      count = this.notifications.filter(notification => !notification.read).length;
+      count = this.notifications.filter(notification => !notification.is_read).length;
     }
     this.unreadCount = count;
   }

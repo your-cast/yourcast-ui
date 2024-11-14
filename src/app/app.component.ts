@@ -9,7 +9,7 @@ import {filter, take} from 'rxjs';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'your-cast-account';
+  title = 'your-cast-settings-account';
 
   constructor(
     @Inject(DOCUMENT) private _document: any,

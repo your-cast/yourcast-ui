@@ -18,7 +18,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatDrawer, MatDrawerContainer, MatDrawerContent, MatSidenavModule} from '@angular/material/sidenav';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
 import {MatChipsModule} from '@angular/material/chips';
@@ -71,6 +71,9 @@ import {MatNativeDateModule} from '@angular/material/core';
     MatDividerModule,
     MatButtonModule,
     MatNativeDateModule,
+    MatDrawer,
+    MatDrawerContainer,
+    MatDrawerContent
   ],
   exports: [
     MatCheckboxModule,
@@ -107,6 +110,9 @@ import {MatNativeDateModule} from '@angular/material/core';
     MatButtonModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatDrawer,
+    MatDrawerContainer,
+    MatDrawerContent
   ],
   providers: [
     MatDatepickerModule
