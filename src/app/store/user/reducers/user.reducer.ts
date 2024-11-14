@@ -1,7 +1,7 @@
 import {tassign} from 'tassign';
 import {Action, createReducer, createSelector, on} from '@ngrx/store';
 import {AppState} from '../../store';
-import {clearUser, setUser, setUserPermissions} from '../actions/user.actions';
+import {clearUser, setUser} from '../actions/user.actions';
 
 export const key = 'user';
 
@@ -18,7 +18,6 @@ export const initialState: State = {
 export const userReducer = createReducer(
   initialState,
   on(setUser, (state, {data}) => (tassign(state, {user: data}))),
-  on(setUserPermissions, (state, {data}) => tassign(state, {permissions: data})),
   on(clearUser, state => tassign(state, {user: null, permissions: null}))
 );
 
@@ -32,9 +31,3 @@ export const getUser = createSelector(
   selectUserState,
   (state: State) => state.user
 );
-
-export const getUserPermissions = createSelector(
-  selectUserState,
-  (state: State) => state.permissions
-);
-

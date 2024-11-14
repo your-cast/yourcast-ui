@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {LayoutComponent} from './layout/layout.component';
-import {AppRoutingModule} from '../app-routing.module';
+import {RoutingModule} from '../routing.module';
 import {RouterModule} from '@angular/router';
 import {SharedModule} from '../shared/shared.module';
 import {WelcomeComponent} from './welcome/welcome.component';
@@ -17,6 +17,10 @@ import {EpisodeCreateComponent} from './episode/create/episode-create.component'
 import {NgxAudioPlayerModule} from '@khajegan/ngx-audio-player';
 import {EpisodeDetailComponent} from './episode/detail/episode-detail.component';
 import {ShowDistributionComponent} from './show/detail/distribution/distribution.component';
+import {SettingsComponent} from './user/settings/settings.component';
+import {SettingsAccountComponent} from './user/settings/settings-account/settings-account.component';
+import {SettingsSecurityComponent} from './user/settings/settings-security/settings-security.component';
+import {SettingsPlanBillingComponent} from './user/settings/settings-plan-billing/settings-plan-billing.component';
 
 @NgModule({
   declarations: [
@@ -29,12 +33,16 @@ import {ShowDistributionComponent} from './show/detail/distribution/distribution
     ShowDetailComponent,
     ShowDistributionComponent,
     EpisodeCreateComponent,
-    EpisodeDetailComponent
+    EpisodeDetailComponent,
+    SettingsComponent,
+    SettingsAccountComponent,
+    SettingsSecurityComponent,
+    SettingsPlanBillingComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
-    AppRoutingModule,
+    RoutingModule,
     ReactiveFormsModule,
     MaterialModule,
     RouterModule,
