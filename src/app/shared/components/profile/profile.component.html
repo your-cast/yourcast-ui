@@ -1,0 +1,40 @@
+<button mat-icon-button (click)="openPanel()" #profileButton>
+  <mat-icon [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
+</button>
+<ng-template #profilePanel>
+  <div
+    class="fixed inset-0 sm:static sm:inset-auto flex flex-col sm:min-w-90 sm:w-90 sm:rounded-2xl overflow-hidden shadow-lg">
+    <div class="flex shrink-0 items-center py-4 pr-4 pl-6 bg-primary text-on-primary">
+      <div class="sm:hidden -ml-1 mr-3">
+        <button mat-icon-button (click)="closePanel()">
+          <mat-icon class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:x-mark'"></mat-icon>
+        </button>
+      </div>
+      <div class="text-lg font-medium leading-10">User</div>
+    </div>
+    <div class="relative flex flex-col flex-auto sm:max-h-120 divide-y overflow-y-auto bg-card">
+      <div class="flex group hover:bg-gray-50 dark:hover:bg-black dark:hover:bg-opacity-5">
+        <a class="flex flex-auto py-3 pl-6 cursor-pointer">
+          <div
+            class="flex shrink-0 items-center justify-center w-8 h-8 mr-4 rounded-full bg-gray-100 dark:bg-gray-700">
+            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:cog-6-tooth'"></mat-icon>
+          </div>
+          <div class="flex flex-col flex-auto">
+            <span class="font-semibold line-clamp-1">Settings</span>
+          </div>
+        </a>
+      </div>
+      <div class="flex group hover:bg-gray-50 dark:hover:bg-black dark:hover:bg-opacity-5">
+        <a class="flex flex-auto py-3 pl-6 cursor-pointer">
+          <div
+            class="flex shrink-0 items-center justify-center w-8 h-8 mr-4 rounded-full bg-gray-100 dark:bg-gray-700">
+            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:exclamation-triangle'"></mat-icon>
+          </div>
+          <div class="flex flex-col flex-auto">
+            <span class="line-clamp-1">Logout</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</ng-template>
